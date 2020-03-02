@@ -1,6 +1,7 @@
-import React, {useState } from 'react';
+import React, {useState, useEffect } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
+import {Redirect} from 'react-router-dom';
 
 // import api
 import FetchAPI from '../api/APIs.js';
@@ -8,13 +9,20 @@ import FetchAPI from '../api/APIs.js';
 export default function Editor(props) {
   const type = props.type;
   const operation = props.operation;
+  
   const [inputs, setInputs] = useState({name:'', content: ''});
 
   const handleChange  = (props) => {
     setInputs({...inputs, [props.target.name]: props.target.value});
   }
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    if(Object.keys(props)[2] === 'data'){
+      setInputs({name: props.data.title, content: props.data.content })
+    }
+  },[])
+
+  const handleSubmit = async (e) => {
     if(inputs.name !=='' && inputs.content !== ''){
       try{
         if(operation==='add'){
@@ -23,7 +31,17 @@ export default function Editor(props) {
             title: inputs.name,
             content: inputs.content,
           });
-        }        
+        } else if(operation==='update'){
+          const result = await FetchAPI.updateFormContent({
+            type: type,
+            title: inputs.name,
+            content: inputs.content,
+            id: props.data.id,
+            image_id: props.data.image_id,
+            link_id: props.data.link_id,            
+          });
+        }
+        
       }catch(e){
         console.log('Error...',e);
       }
@@ -52,14 +70,14 @@ export default function Editor(props) {
                       <div className="form-group row">
                         <label className="col-sm-2 form-control-label text-xs-right" > Name: </label>
                         <div className="col-sm-10">
-                          <input className="form-control boxed" placeholder type="text" name="name" onChange={handleChange } />
+                          <input className="form-control boxed" placeholder type="text" value = {inputs.name} name="name" onChange={handleChange } />
                           
                         </div>
                       </div>
                       <div className="form-group row">
                         <label className="col-sm-2 form-control-label text-xs-right"> Content: </label>
                         <div className="col-sm-10">
-                          <textarea className="form-control boxed " rows="8" type="text" name="content" onChange={handleChange } />
+                          <textarea className="form-control boxed " rows="8" type="text" value = {inputs.content} name="content" onChange={handleChange } />
                         </div>
                       </div>                     
                       <div className="form-group row">

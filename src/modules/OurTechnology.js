@@ -1,10 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Component } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
 
-export default class OurTechnology extends Component {
-    render(){
+
+import { Link } from 'react-router-dom';
+
+
+// import api
+import FetchAPI from '../api/APIs.js';
+
+export default function Technology(){
+  const [technologyList, setTechnologyList] = useState([]);
+  
+  const fetchTechnology = async () => {
+    try{    
+      const result = await FetchAPI.getTechnologyList({}); 
+      console.log('result',result)
+      setTechnologyList(result.technologyList);
+     
+    }catch(e){
+      console.log('Error...',e);
+    }
+  }
+
+  useEffect(() => {
+   fetchTechnology();
+  },[]);
+
+  const handleUpdate = async (data) => {
+    console.log('handleUpdate',data)
+  }
+
+  const handleActiveDeactive = async (data) => {
+    console.log('handleActiveDeactive',data)
+  }
         return (
           <div>
                  <Header />
@@ -15,6 +45,9 @@ export default class OurTechnology extends Component {
                   <article className="content responsive-tables-page">
                     <div className="title-block">
                       <h1 className="title"> Our Technology </h1>
+
+                      <Link to= {{pathname:"/editor", state : {type:'technology', operation: 'add'}}}><button type="button" className="btn btn-success-outline">Add</button></Link>
+                     
                       <p className="title-description"></p>
                     </div>
                     <section className="section">
@@ -37,78 +70,18 @@ export default class OurTechnology extends Component {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <tr>
-                                        <td>1</td>
-                                        <td>Microsoft.Net</td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>2</td>
-                                        <td> Java</td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>3</td>
-                                        <td>Salesforce </td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>4</td>
-                                        <td>PHP </td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>5</td>
-                                        <td>Biztalk</td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>6</td>
-                                        <td>Sharepoint</td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>7</td>
-                                        <td>ios  </td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>8</td>
-                                        <td>Android  </td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>9</td>
-                                        <td>Hitachivantara (pentaho) </td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>10</td>
-                                        <td>Python </td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>11</td>
-                                        <td>Nodejs </td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>12</td>
-                                        <td>Other Technology  </td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
+                                    {technologyList.map((data, index) => {
+                                          return(
+                                            <tr>
+                                              <td>{index+1}</td>
+                                              <td>{data.title}</td>
+                                              <Link to= {{pathname:"/editor", state : {type:'technology', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link>
+
+                                              <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
+                                            </tr>    
+                                          )                               
+                                        })                                        
+                                        }
                                     </tbody>
                                   </table>
                                 </div>
@@ -129,4 +102,3 @@ export default class OurTechnology extends Component {
                 </div>
           )
     }
-}

@@ -1,10 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Component } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
 
-export default class Portfolio extends Component {
-    render(){
+
+import { Link } from 'react-router-dom';
+
+
+// import api
+import FetchAPI from '../api/APIs.js';
+
+export default function Portfolio(){
+  const [portfolioList, setPortfolioList] = useState([]);
+  
+  const fetchPortfolio = async () => {
+    try{    
+      const result = await FetchAPI.getPortfolioList({}); 
+      console.log('result',result)
+      setPortfolioList(result.portfolioList);
+     
+    }catch(e){
+      console.log('Error...',e);
+    }
+  }
+
+  useEffect(() => {
+   fetchPortfolio();
+  },[]);
+
+  const handleUpdate = async (data) => {
+    console.log('handleUpdate',data)
+  }
+
+  const handleActiveDeactive = async (data) => {
+    console.log('handleActiveDeactive',data)
+  }
         return (
           <div>
                  <Header />
@@ -15,6 +45,7 @@ export default class Portfolio extends Component {
                   <article className="content responsive-tables-page">
                     <div className="title-block">
                       <h1 className="title"> Portfolio  </h1>
+                      <Link to= {{pathname:"/editor", state : {type:'portfolio', operation: 'add'}}}><button type="button" className="btn btn-success-outline">Add</button></Link>
                       <p className="title-description"></p>
                     </div>
                     <section className="section">
@@ -37,25 +68,17 @@ export default class Portfolio extends Component {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <tr>
-                                        <td>1</td>
-                                        <td>Portfolio 1</td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>2</td>
-                                        <td>Portfolio 2</td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>3</td>
-                                        <td>Portfolio 3 </td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      
+                                    {portfolioList.map((data, index) => {
+                                          return(
+                                            <tr>
+                                              <td>{index+1}</td>
+                                              <td>{data.title}</td>
+                                              <td><Link to= {{pathname:"/editor", state : {type:'technology', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
+                                              <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
+                                            </tr>    
+                                          )                               
+                                        })                                        
+                                        }
                                     </tbody>
                                   </table>
                                 </div>
@@ -76,4 +99,3 @@ export default class Portfolio extends Component {
                 </div>
           )
     }
-}

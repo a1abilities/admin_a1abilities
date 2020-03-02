@@ -1,10 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Component } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
 
-export default class OurPartners extends Component {
-    render(){
+
+import { Link } from 'react-router-dom';
+
+
+// import api
+import FetchAPI from '../api/APIs.js';
+
+export default function Partners(){
+  const [partnersList, setPartnersList] = useState([]);
+  
+  const fetchPartners = async () => {
+    try{    
+      const result = await FetchAPI.getPartnersList({}); 
+      console.log('result',result)
+      setPartnersList(result.partnersList);
+     
+    }catch(e){
+      console.log('Error...',e);
+    }
+  }
+
+  useEffect(() => {
+   fetchPartners();
+  },[]);
+
+  const handleUpdate = async (data) => {
+    console.log('handleUpdate',data)
+  }
+
+  const handleActiveDeactive = async (data) => {
+    console.log('handleActiveDeactive',data)
+  }
         return (
           <div>
                  <Header />
@@ -15,6 +45,7 @@ export default class OurPartners extends Component {
                   <article className="content responsive-tables-page">
                     <div className="title-block">
                       <h1 className="title"> Our Partners </h1>
+                      <Link to= {{pathname:"/editor", state : {type:'partners', operation: 'add'}}}><button type="button" className="btn btn-success-outline">Add</button></Link>
                       <p className="title-description"></p>
                     </div>
                     <section className="section">
@@ -37,19 +68,17 @@ export default class OurPartners extends Component {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <tr>
-                                        <td>1</td>
-                                        <td>Sarga Technology</td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                      <tr>
-                                        <td>2</td>
-                                        <td>Rentronics</td>
-                                        <td><button type="button" className="btn btn-success-outline" onclick="window.location.href='/editor.html'">Update</button></td>
-                                        <td><button type="button" className="btn btn-danger-outline">Delete</button></td> 
-                                      </tr>
-                                     
+                                    {partnersList.map((data, index) => {
+                                          return(
+                                            <tr>
+                                              <td>{index+1}</td>
+                                              <td>{data.title}</td>
+                                              <td><Link to= {{pathname:"/editor", state : {type:'technology', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
+                                              <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
+                                            </tr>    
+                                          )                               
+                                        })                                        
+                                        }
                                     </tbody>
                                   </table>
                                 </div>
@@ -70,4 +99,3 @@ export default class OurPartners extends Component {
                 </div>
           )
     }
-}

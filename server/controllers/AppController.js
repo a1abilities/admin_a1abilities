@@ -19,6 +19,26 @@ const addFormContent = async function (req, res, next) {
     }
 }
 
+const updateFormContent = async function (req, res, next) {
+    const params = {
+        type: req.body.type,
+        title: req.body.title,
+        content: req.body.content,
+        id: req.body.id,
+        image_id: req.body.image_id,
+        link_id: req.body.link_id,   
+    }
+
+    console.log(params);
+    try {
+        const newActivity = new AppModel(params);
+        const result = await newActivity.updateFormContent();
+        res.send({ result: result });
+    } catch (err) {
+        next(err);
+    }
+}
+
 const getServicesList = async function (req, res, next) {
     try {
         const result = await new AppModel({}).getServicesList();
@@ -67,9 +87,33 @@ const getGoalsList = async function (req, res, next) {
     }
 }
 
+const getTechnologyList = async function (req, res, next) {
+    try {
+        const result = await new AppModel({}).getTechnologyList();
+        res.send({ technologyList: result });
+    } catch (err) {
+        next(err);
+    }
+}
+
+const getPartnersList = async function (req, res, next) {
+    try {
+        const result = await new AppModel({}).getPartnersList();
+        res.send({ partnersList: result });
+    } catch (err) {
+        next(err);
+    }
+}
 
 
-
+const getPortfolioList = async function (req, res, next) {
+    try {
+        const result = await new AppModel({}).getPortfolioList();
+        res.send({ portfolioList: result });
+    } catch (err) {
+        next(err);
+    }
+}
 
 module.exports = {
     addFormContent: addFormContent,
@@ -78,4 +122,9 @@ module.exports = {
     getAboutList: getAboutList,
     getContactList:getContactList,
     getGoalsList:getGoalsList,
+    getTechnologyList:getTechnologyList,
+    getPartnersList:getPartnersList,
+    getPortfolioList:getPortfolioList,
+    updateFormContent: updateFormContent,
+
 };
