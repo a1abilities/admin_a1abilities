@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Component } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
 

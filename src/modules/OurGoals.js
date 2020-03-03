@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Component } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
 
@@ -74,7 +73,7 @@ export default function Goals(){
                                             <tr>
                                               <td>{index+1}</td>
                                               <td>{data.title}</td>
-                                              <td><Link to= {{pathname:"/editor", state : {type:'goals', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
+                                              <td><Link to= {{pathname:"/editor", state : {type:'portfolio', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
                                               <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
                                             </tr>    
                                           )                               

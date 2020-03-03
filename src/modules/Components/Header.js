@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+
 
 export default function Header(){
     return (
@@ -13,8 +13,6 @@ export default function Header(){
           <div className="header-block header-block-search">
             <form role="search">
               
-            
-            
             </form>
           </div>
           <div className="header-block header-block-nav">

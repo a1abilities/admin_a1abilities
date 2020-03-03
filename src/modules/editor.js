@@ -1,7 +1,6 @@
 import React, {useState, useEffect } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
-import { Link } from 'react-router-dom';
 
 
 
@@ -12,20 +11,27 @@ export default function Editor(props) {
   const type = props.type;
   const operation = props.operation;
 
+
+
+  let pathLink = '';
   let titleText = '';
   switch(type){
-    case 'services'   : titleText = 'Our Services'      ; break;
-    case 'technology' : titleText = 'Our Technology'; break;
-    case 'whyus'      : titleText = 'Why Us'        ; break;
-    case 'contact'    : titleText = 'Contact'       ; break;
-    case 'partners'   : titleText = 'Our Partners'  ; break;
-    case 'about'      : titleText = 'About us'      ; break;
-    case 'goals'      : titleText = 'Our Goals'     ; break;
 
+    case 'services'   : titleText = 'Our Services'  ; pathLink = '/Services';  break;
+    case 'technology' : titleText = 'Our Technology'; pathLink = '/OurTechnology'; break;
+    case 'whyus'      : titleText = 'Why Us'        ; pathLink = '/WhyUs'; break;
+    case 'contact'    : titleText = 'Contact'       ; pathLink = '/Contact'; break;
+    case 'partners'   : titleText = 'Our Partners'  ; pathLink = '/OurPartners'; break;
+    case 'about'      : titleText = 'About us'      ; pathLink = '/About'; break;
+    case 'goals'      : titleText = 'Our Goals'     ; pathLink = '/OurGoals'; break;
+    case 'portfolio'  : titleText = 'Portfolio'     ; pathLink = '/Portfolio'; break;
 
-  } 
+ }
+  
+  
+
   const [inputs, setInputs] = useState({name:'', content: ''});
-  const [image, setImage] = useState({});
+  //const [image, setImage] = useState({});
 
   const handleChange  = (props) => {
     setInputs({...inputs, [props.target.name]: props.target.value});
@@ -92,8 +98,17 @@ export default function Editor(props) {
                     
                     <h3 className="title"> 
                     {titleText}
-                    {/* <Link to= {{pathname:"/editor", state : {type:''}}}></Link> */}
+
+
+                    <a href= {pathLink} >
+                    <button type="button" id="closeFrame" className="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">×</span>
+                          <span className="sr-only">Close</span>
+                        
+                        </button>
+                    </a>
                     
+                                        
                     <span className="sparkline bar" data-type="bar" />
                     </h3>
                   </div>
@@ -102,6 +117,7 @@ export default function Editor(props) {
                       <div className="form-group row">
                         <label className="col-sm-2 form-control-label text-xs-right" > Name: </label>
                         <div className="col-sm-10">
+
                           <input className="form-control boxed" placeholder type="text" value = {inputs.name} name="name" onChange={handleChange } />
                           
                         </div>
