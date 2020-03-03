@@ -16,6 +16,8 @@ const Index = lazy(()=> import('./modules/index'));
 const Services = lazy(()=> import('./modules/Services'));
 const OurTechnology = lazy(()=> import('./modules/OurTechnology'));
 const Editor = lazy(()=> import('./modules/editor'));
+const Image = lazy(()=> import('./modules/image'));
+
 
 
 
@@ -36,7 +38,8 @@ function App() {
                 <Route exact path="/OurGoals" component={OurGoals} />
                 <Route exact path="/OurPartners" component={OurPartners} />
                 <Route exact path="/Portfolio" component={Portfolio} />
-                <Route exact path="/Login" component={Login} />     
+                
+                <Route exact path="/image" component={Image} />     
               </Switch>
             </Suspense>
           </Router>

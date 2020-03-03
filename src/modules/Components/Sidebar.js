@@ -12,7 +12,7 @@ export default function Sidebar(){
                 <span className="l l3" />
                 <span className="l l4" />
                 <span className="l l5" />
-            </div> Modular Admin
+            </div> A1abilities Admin 
             </div>
         </div>
         <nav className="menu">

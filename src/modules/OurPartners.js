@@ -44,9 +44,10 @@ export default function Partners(){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title"> Our Partners </h1>
-                      <Link to= {{pathname:"/editor", state : {type:'partners', operation: 'add'}}}><button type="button" className="btn btn-success-outline">Add</button></Link>
-                      <p className="title-description"></p>
+                      <h1 className="title"> Our Partners 
+                <Link to= {{pathname:"/editor", state : {type:'partners', operation: 'add'}}}><button type="button" style={{float: 'right' }} className="btn btn-success-outline">Add</button></Link>
+                      </h1> 
+                   <p className="title-description"></p>
                     </div>
                     <section className="section">
                       <div className="row">
@@ -73,7 +74,7 @@ export default function Partners(){
                                             <tr>
                                               <td>{index+1}</td>
                                               <td>{data.title}</td>
-                                              <td><Link to= {{pathname:"/editor", state : {type:'technology', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
+                                              <td><Link to= {{pathname:"/editor", state : {type:'partners', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
                                               <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
                                             </tr>    
                                           )                               

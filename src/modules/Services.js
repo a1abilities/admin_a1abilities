@@ -44,7 +44,7 @@ export default function Services(){
                       <h1 className="title"> Our Services 
                      
 
-                      <Link to= {{pathname:"/editor", state : {type:'services', operation: 'add'}}}><button type="button" className="btn btn-success-outline">Add</button></Link>
+                      <Link to= {{pathname:"/editor", state : {type:'services', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
                       </h1>
                       <p className="title-description"></p>
                       
@@ -74,7 +74,7 @@ export default function Services(){
                                             <tr>
                                               <td>{index+1}</td>
                                               <td>{data.title}</td>
-                                              <td><Link to= {{pathname:"/editor", state : {type:'technology', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
+                                              <td><Link to= {{pathname:"/editor", state : {type:'services', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
                                               <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
                                             </tr>    
                                           )                               

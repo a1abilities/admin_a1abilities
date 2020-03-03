@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Header(){
     return (
@@ -11,11 +12,9 @@ export default function Header(){
           </div>
           <div className="header-block header-block-search">
             <form role="search">
-              <div className="input-container">
-                <i className="fa fa-search" />
-                <input placeholder="Search" type="search" />
-                <div className="underline" />
-              </div>
+              
+            
+            
             </form>
           </div>
           <div className="header-block header-block-nav">
@@ -34,6 +33,7 @@ export default function Header(){
                 </div>
               </li>
             </ul>
+           
           </div>
         </header>
       

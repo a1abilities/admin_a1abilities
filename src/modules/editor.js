@@ -1,7 +1,9 @@
 import React, {useState, useEffect } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
-import {Redirect} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+
 
 // import api
 import FetchAPI from '../api/APIs.js';
@@ -9,8 +11,21 @@ import FetchAPI from '../api/APIs.js';
 export default function Editor(props) {
   const type = props.type;
   const operation = props.operation;
-  
+
+  let titleText = '';
+  switch(type){
+    case 'services'   : titleText = 'Our Services'      ; break;
+    case 'technology' : titleText = 'Our Technology'; break;
+    case 'whyus'      : titleText = 'Why Us'        ; break;
+    case 'contact'    : titleText = 'Contact'       ; break;
+    case 'partners'   : titleText = 'Our Partners'  ; break;
+    case 'about'      : titleText = 'About us'      ; break;
+    case 'goals'      : titleText = 'Our Goals'     ; break;
+
+
+  } 
   const [inputs, setInputs] = useState({name:'', content: ''});
+  const [image, setImage] = useState({});
 
   const handleChange  = (props) => {
     setInputs({...inputs, [props.target.name]: props.target.value});
@@ -21,6 +36,17 @@ export default function Editor(props) {
       setInputs({name: props.data.title, content: props.data.content })
     }
   },[])
+
+  const selectImage = () => {
+    if(document.getElementById('upload_image').files && document.getElementById('upload_image').files[0]){
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('imagePreview').style.backgroundImage = 'url(' + e.target.result + ')';
+      };
+      reader.readAsDataURL(document.getElementById('upload_image').files[0]);
+      document.getElementById('closeFrame').click();
+    }
+  }
 
   const handleSubmit = async (e) => {
     if(inputs.name !=='' && inputs.content !== ''){
@@ -50,6 +76,7 @@ export default function Editor(props) {
     }
   }
 
+  
 
         return (
          <div>
@@ -62,7 +89,12 @@ export default function Editor(props) {
                 <div className="mobile-menu-handle" />
                 <article className="content item-editor-page">
                   <div className="title-block">
-                    <h3 className="title"> Add new item <span className="sparkline bar" data-type="bar" />
+                    
+                    <h3 className="title"> 
+                    {titleText}
+                    {/* <Link to= {{pathname:"/editor", state : {type:''}}}></Link> */}
+                    
+                    <span className="sparkline bar" data-type="bar" />
                     </h3>
                   </div>
                   <form name="item">
@@ -90,7 +122,8 @@ export default function Editor(props) {
                                   <i className="fa fa-trash-o" />
                                 </a>
                               </div>
-                              <div className="image" style={{backgroundImage: 'url("https://s3.amazonaws.com/uifaces/faces/twitter/brad_frost/128.jpg")'}} />
+                              <div id = "imagePreview" className="image" style={{backgroundImage: ''}} />  
+                              <img src=''/>                                    
                             </div>
                            
                             <a href="#" className="add-image" data-toggle="modal" data-target="#modal-media">
@@ -116,7 +149,7 @@ export default function Editor(props) {
                     <div className="modal-content">
                       <div className="modal-header">
                         <h4 className="modal-title">Media Library</h4>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" id="closeFrame" className="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">×</span>
                           <span className="sr-only">Close</span>
                         </button>
@@ -141,13 +174,22 @@ export default function Editor(props) {
                                 </div>                              
                               </div>
                             </div>
+                            <div className="modal-footer">
+                              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="button" className="btn btn-primary">Insert Selected</button>
+                            </div>
                           </div>
                           <div className="tab-pane fade active in" id="upload" role="tabpanel">
                             <div className="upload-container">
                               <div id="dropzone">
                                 <form action="/" method="POST" encType="multipart/form-data" className="dropzone needsclick dz-clickable" id="demo-upload">
                                   <div className="dz-message-block">
-                                    <div className="dz-message needsclick"> Drop files here or click to upload. </div>
+                                    <div className="dz-message needsclick">
+                                      <input accept="image/gif, image/jpeg, image/png, image/jpg"  style ={{display: 'none'}} id="upload_image" type="file" onChange ={selectImage} />
+                                        <label htmlFor="upload_image">
+                                          Click to upload.
+                                        </label>
+                                    </div>
                                   </div>
                                 </form>
                               </div>
@@ -155,10 +197,7 @@ export default function Editor(props) {
                           </div>
                         </div>
                       </div>
-                      <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Insert Selected</button>
-                      </div>
+                      
                     </div>
                   </div>
                 </div>

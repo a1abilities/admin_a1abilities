@@ -44,10 +44,9 @@ export default function Technology(){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title"> Our Technology </h1>
-
-                      <Link to= {{pathname:"/editor", state : {type:'technology', operation: 'add'}}}><button type="button" className="btn btn-success-outline">Add</button></Link>
-                     
+                      <h1 className="title"> Our Technology 
+           <Link to= {{pathname:"/editor", state : {type:'technology', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                      </h1>
                       <p className="title-description"></p>
                     </div>
                     <section className="section">
