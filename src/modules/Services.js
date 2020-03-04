@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 // import api
 import FetchAPI from '../api/APIs.js';
 
-export default function Services(){
+export default function Services(props){
   const [serviceList, setServiceList] = useState([]);
   
   const fetchServices = async () => {
@@ -33,7 +33,7 @@ export default function Services(){
   }
         return (
           <div>
-                 <Header />
+                 <Header {...props}/>
                  <Sidebar />
                   <div className="sidebar-overlay" id="sidebar-overlay" />
                   <div className="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle" />

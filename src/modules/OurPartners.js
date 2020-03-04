@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 // import api
 import FetchAPI from '../api/APIs.js';
 
-export default function Partners(){
+export default function Partners(props){
   const [partnersList, setPartnersList] = useState([]);
   
   const fetchPartners = async () => {
@@ -36,7 +36,7 @@ export default function Partners(){
   }
         return (
           <div>
-                 <Header />
+                 <Header {...props}/>
                  <Sidebar />
                   <div className="sidebar-overlay" id="sidebar-overlay" />
                   <div className="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle" />

@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 // import api
 import FetchAPI from '../api/APIs.js';
 
-export default function Goals(){
+export default function Goals(props){
   const [GoalsList, setGoalsList] = useState([]);
   
   const fetchGoals = async () => {
@@ -36,7 +36,7 @@ export default function Goals(){
   }
         return (
           <div>
-                 <Header />
+                 <Header {...props}/>
                  <Sidebar />
                   <div className="sidebar-overlay" id="sidebar-overlay" />
                   <div className="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle" />

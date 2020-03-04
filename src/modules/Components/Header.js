@@ -4,7 +4,7 @@ import { APP_TOKEN } from '../../api/config/Constants';
 
 export default function Header(props){
 
-  const handleLogout = () => {
+  function handleLogout(){
     APP_TOKEN.remove();
     props.history.push('/login');
   }
@@ -34,6 +34,7 @@ export default function Header(props){
               <div className="img" style={{backgroundImage: 'url("https://avatars3.githubusercontent.com/u/3959008?v=3&s=40")'}}>
               </div>
               <span className="name" > 
+                {/* A1abilities</span> */}
                 <button onClick = {handleLogout}>A1abilities</button></span>
             </a>
             <div className="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">

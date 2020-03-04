@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 // import api
 import FetchAPI from '../api/APIs.js';
 
-export default function Technology(){
+export default function Technology(props){
   const [technologyList, setTechnologyList] = useState([]);
   
   const fetchTechnology = async () => {
@@ -37,7 +37,7 @@ export default function Technology(){
   }
         return (
           <div>
-                 <Header />
+                 <Header {...props}/>
                  <Sidebar />
                   <div className="sidebar-overlay" id="sidebar-overlay" />
                   <div className="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle" />
