@@ -39,6 +39,29 @@ const updateFormContent = async function (req, res, next) {
     }
 }
 
+
+const login = async function (req, res, next) {
+    const params = {
+       username: req.body.username,
+       password:req.body.password,
+    }
+
+    // console.log(params);
+    try {
+        const newActivity = new AppModel(params);
+        const result = await newActivity.login();
+        res.send( result );
+
+        // if(result.length > 0){
+        //     res.send({ is_metched: true });
+        // }else{
+        //     res.send({ is_metched: false });
+        // }
+    } catch (err) {
+        next(err);
+    }
+}
+
 const getServicesList = async function (req, res, next) {
     try {
         const result = await new AppModel({}).getServicesList();
@@ -129,5 +152,6 @@ module.exports = {
     getPartnersList:getPartnersList,
     getPortfolioList:getPortfolioList,
     updateFormContent: updateFormContent,
+    login: login,
 
 };

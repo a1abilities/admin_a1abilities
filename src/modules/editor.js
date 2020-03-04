@@ -1,17 +1,18 @@
 import React, {useState, useEffect } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
-
+import {Redirect} from 'react-router-dom';
 
 
 // import api
 import FetchAPI from '../api/APIs.js';
 
-export default function Editor(props) {
+export default function Editor(mainProps) {
+  const props = mainProps.location.state;
   const type = props.type;
   const operation = props.operation;
 
-
+ 
 
   let pathLink = '';
   let titleText = '';
@@ -28,7 +29,7 @@ export default function Editor(props) {
 
  }
   
-  
+
 
   const [inputs, setInputs] = useState({name:'', content: ''});
   //const [image, setImage] = useState({});
@@ -62,6 +63,8 @@ export default function Editor(props) {
             type: type,
             title: inputs.name,
             content: inputs.content,
+                   
+
           });
         } else if(operation==='update'){
           const result = await FetchAPI.updateFormContent({
@@ -70,7 +73,9 @@ export default function Editor(props) {
             content: inputs.content,
             id: props.data.id,
             image_id: props.data.image_id,
-            link_id: props.data.link_id,            
+            link_id: props.data.link_id,   
+            
+            
           });
         }
         
@@ -86,7 +91,8 @@ export default function Editor(props) {
 
         return (
          <div>
-                <Header/>
+
+               <Header {...mainProps}/>
                 <Sidebar/>  
             
                 <div>
@@ -154,7 +160,24 @@ export default function Editor(props) {
                       </div>
                       <div className="form-group row">
                         <div className="col-sm-10 col-sm-offset-2">
-                          <button type="button" className="btn btn-primary" onClick={handleSubmit}> Submit </button>
+                       
+                                       {/* helloThere() 
+                                          {
+                                            handleSubmit
+                                          }
+
+                                          messageInConsole() 
+                                          {
+                                            return <Redirect to='/'/>
+                                          } */}
+
+                        
+                          <button type="button"  className="btn btn-primary" onClick={() => {
+                                                            this.helloThere();
+                                                            this.messageInConsole();
+                                                          }}>   Submit </button>
+                                                                            
+                        
                         </div>
                       </div>
                     </div>

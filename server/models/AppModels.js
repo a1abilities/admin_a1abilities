@@ -8,6 +8,8 @@ const AppModel = function (params) {
   this.id = params.id;
   this.image_id = params.image_id;
   this.link_id = params.link_id;
+  this.password = params.password;
+  this.username = params.username;
 };
 
 
@@ -203,6 +205,26 @@ AppModel.prototype.getPortfolioList = function () {
     });
   } 
 
+
+
+  AppModel.prototype.login = function () {
+    const that = this;
+    return new Promise(function (resolve, reject) {
+      connection.getConnection(function (error, connection) {
+        if (error) {
+          throw error;
+        }
+  
+        connection.changeUser({database : dbName});
+        connection.query('SELECT name, token, username, is_active FROM user WHERE username = "'+that.username+'" AND password = "'+that.password+'"', function (error, rows, fields) { 
+          if (error) {  console.log("Error...", error); reject(error);  }          
+          resolve(rows);              
+        });
+          connection.release();
+          console.log('Process Complete %d', connection.threadId);
+      });
+    });
+  } 
 
 
 
