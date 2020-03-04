@@ -55,17 +55,21 @@ export default function Editor(mainProps) {
     }
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     if(inputs.name !=='' && inputs.content !== ''){
       try{
         if(operation==='add'){
           const result = await FetchAPI.addFormContent({
             type: type,
             title: inputs.name,
-            content: inputs.content,
-                   
-
+            content: inputs.content,      
           });
+          console.log(result)
+          if(result.is_successful === true){
+            mainProps.history.push(pathLink);
+          }else {
+            alert('operation failed');
+          }
         } else if(operation==='update'){
           const result = await FetchAPI.updateFormContent({
             type: type,
@@ -73,11 +77,15 @@ export default function Editor(mainProps) {
             content: inputs.content,
             id: props.data.id,
             image_id: props.data.image_id,
-            link_id: props.data.link_id,   
-            
-            
+            link_id: props.data.link_id,          
           });
+          console.log(result)
+          if(result.is_successful === true){
+            console.log('jflsa')
+            mainProps.history.push(pathLink);
+          }
         }
+        
         
       }catch(e){
         console.log('Error...',e);
@@ -160,24 +168,7 @@ export default function Editor(mainProps) {
                       </div>
                       <div className="form-group row">
                         <div className="col-sm-10 col-sm-offset-2">
-                       
-                                       {/* helloThere() 
-                                          {
-                                            handleSubmit
-                                          }
-
-                                          messageInConsole() 
-                                          {
-                                            return <Redirect to='/'/>
-                                          } */}
-
-                        
-                          <button type="button"  className="btn btn-primary" onClick={() => {
-                                                            this.helloThere();
-                                                            this.messageInConsole();
-                                                          }}>   Submit </button>
-                                                                            
-                        
+                          <button type="button"  className="btn btn-primary" onClick={handleSubmit}>   Submit </button>
                         </div>
                       </div>
                     </div>

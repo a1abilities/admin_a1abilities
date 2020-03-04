@@ -26,22 +26,27 @@ export default function Header(props){
           </div>
         </form> */}
       </div>
+
+      
       <div className="header-block header-block-nav">
         <ul className="nav-profile">
           <li className="notifications new">
           </li><li className="profile dropdown" >
-            <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            <a  data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
               <div className="img" style={{backgroundImage: 'url("https://avatars3.githubusercontent.com/u/3959008?v=3&s=40")'}}>
               </div>
-              <span className="name" > 
-                {/* A1abilities</span> */}
-                <button onClick = {handleLogout}>A1abilities</button></span>
+             
+              <span className="name" >  
+              <button onClick = {handleLogout} type="button" class="btn btn-default btn-sm">
+         <i class="fa fa-sign-out"> <span > Log out</span></i>
+        </button>
+        
+                   
+                
+                </span> 
+               {/*  <button onClick = {handleLogout}>A1abilities</button>*/}
             </a>
-            <div className="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
-              
-              <a className="dropdown-item" href="Login">
-                <i className="fa fa-power-off icon"  /> Logout </a>
-            </div>
+            
           </li>
         </ul>
 

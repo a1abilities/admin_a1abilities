@@ -13,7 +13,12 @@ const addFormContent = async function (req, res, next) {
     try {
         const newActivity = new AppModel(params);
         const result = await newActivity.addFormContent();
-        res.send({ result: result });
+        if(result.insertId > 0){
+            res.send({ result: result, is_successful : true });
+        }else{
+            res.send({ result: result, is_successful : false });
+        }
+        
     } catch (err) {
         next(err);
     }
@@ -33,7 +38,12 @@ const updateFormContent = async function (req, res, next) {
     try {
         const newActivity = new AppModel(params);
         const result = await newActivity.updateFormContent();
-        res.send({ result: result });
+        console.log(result)
+        if(result.changedRows > 0){
+            res.send({ result: result, is_successful : true });
+        }else{
+            res.send({ result: result, is_successful : false });
+        }
     } catch (err) {
         next(err);
     }

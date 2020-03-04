@@ -24,7 +24,7 @@ AppModel.prototype.addFormContent = function () {
 
       connection.changeUser({database : dbName});
       connection.query('INSERT INTO website_content(type, title, content, is_active) VALUES ?',[Values], function (error, rows, fields) { 
-        if (error) {  console.log("Error...", error); reject(error);  }          
+        if (error) {  console.log("Error...", error); reject(error);  } 
         resolve(rows);              
       });
         connection.release();
