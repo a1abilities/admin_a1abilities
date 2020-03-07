@@ -14,11 +14,9 @@ export default function Technology(props){
   const [technologyList, setTechnologyList] = useState([]);
   
   const fetchTechnology = async () => {
-    try{    
-      const result = await FetchAPI.getTechnologyList({}); 
-      console.log('result',result)
-      setTechnologyList(result.technologyList);
-     
+    try{       
+      const result = await FetchAPI.getTabRelatedList({type: 'technology'});      
+      setTechnologyList(result.resultList);     
     }catch(e){
       console.log('Error...',e);
     }

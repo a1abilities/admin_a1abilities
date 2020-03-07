@@ -10,12 +10,12 @@ import { Link } from 'react-router-dom';
 import FetchAPI from '../api/APIs.js';
 
 export default function Contact(props){
-  const [ContactList, setContactList] = useState([]);
-  
+  const [contactList, setContactList] = useState([]);  
+
+
   const fetchContact = async () => {
     try{    
-      const result = await FetchAPI.getContactList({}); 
-      
+      const result = await FetchAPI.getContactList({});      
       setContactList(result.contactList);
       console.log('result',result)
     }catch(e){
@@ -27,9 +27,9 @@ export default function Contact(props){
    fetchContact();
   },[]);
 
-  const handleUpdate = async (data) => {
-    console.log('handleUpdate',data)
-  }
+  // const handleUpdate = async (data) => {
+  //   console.log('handleUpdate',data)
+  // }
 
   const handleActiveDeactive = async (data) => {
     console.log('handleActiveDeactive',data)
@@ -44,7 +44,7 @@ export default function Contact(props){
                   <article className="content responsive-tables-page">
                     <div className="title-block">
                       <h1 className="title"> Contact US  
-           <Link to= {{pathname:"/editor", state : {type:'contact', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                        <Link to= {{pathname:"/editor", state : {type:'contact', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
                       </h1>
                       <p className="title-description"></p>
                     </div>
@@ -62,24 +62,27 @@ export default function Contact(props){
                                     <thead>
                                       <tr>
                                         <th>S No.</th>
-                                        <th>Contact US </th>
-                                        <th> Update</th>
-                                        <th>  Delete</th>
+                                        <th>E-mail </th>
+                                        <th>Phone </th>
+                                        <th>Address </th>
+                                        <th>Update</th>
+                                        <th>Delete</th>
                                       </tr>
                                     </thead>
                                     <tbody>
-                                    {ContactList.map((data, index) => {
+                                      {(contactList.length > 0 ? contactList : []).map((data, index) => {
                                           return(
                                             <tr>
                                               <td>{index+1}</td>
-                                              <td>{data.title}</td>
+                                              <td>{data.email}</td>
+                                              <td>{data.mobile}</td>
+                                              <td>{data.address}</td>
                                               <td><Link to= {{pathname:"/editor", state : {type:'contact', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
                                               <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
                                             </tr>    
                                           )                               
-                                        })                                        
-                                        }
-                                      
+                                        })
+                                      }
                                     </tbody>
                                   </table>
                                 </div>

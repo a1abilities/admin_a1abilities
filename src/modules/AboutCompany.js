@@ -14,10 +14,9 @@ export default function About(props){
   
   const fetchAbout = async () => {
     try{    
-      const result = await FetchAPI.getAboutList({}); 
-      
-      setAboutList(result.aboutList);
-      console.log('result',result)
+      const result = await FetchAPI.getTabRelatedList({type: 'about'});      
+      setAboutList(result.resultList);
+      // console.log('result',result)
     }catch(e){
       console.log('Error...',e);
     }

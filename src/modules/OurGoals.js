@@ -14,10 +14,9 @@ export default function Goals(props){
   
   const fetchGoals = async () => {
     try{    
-      const result = await FetchAPI.getGoalsList({}); 
-      
-      setGoalsList(result.goalsList);
-      console.log('result',result)
+      const result = await FetchAPI.getTabRelatedList({type: 'goals'});      
+      setGoalsList(result.resultList);
+      // console.log('result',result)
     }catch(e){
       console.log('Error...',e);
     }

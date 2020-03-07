@@ -11,11 +11,9 @@ export default function Whyus(props){
   const [WhyusList, setWyusList] = useState([]);
   
   const fetchWhyus = async () => {
-    try{    
-      const result = await FetchAPI.getWyusList({}); 
-      
-      setWyusList(result.whyUsList);
-      console.log('result',result)
+    try{      
+      const result = await FetchAPI.getTabRelatedList({type: 'whyus'});
+      setWyusList(result.resultList);
     }catch(e){
       console.log('Error...',e);
     }

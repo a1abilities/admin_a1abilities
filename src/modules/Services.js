@@ -12,9 +12,8 @@ export default function Services(props){
   
   const fetchServices = async () => {
     try{    
-      const result = await FetchAPI.getServicesList({}); 
-      setServiceList(result.serviceList);
-      console.log('result',result)
+      const result = await FetchAPI.getTabRelatedList({type: 'services'});
+      setServiceList(result.resultList);
     }catch(e){
       console.log('Error...',e);
     }

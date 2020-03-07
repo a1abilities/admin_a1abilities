@@ -3,7 +3,7 @@ export function authHeader() {
   // let user = JSON.parse(sessionStorage.token);
 
   // if (user && user.token) {
-  return { Authorization: `Basic ${sessionStorage.token}` };
+  return { Authorization: `Basic ${sessionStorage.token}`,  'content-type': 'application/json' };
   
   // } else {
   //     return {};

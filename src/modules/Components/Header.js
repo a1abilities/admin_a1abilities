@@ -33,20 +33,12 @@ export default function Header(props){
           <li className="notifications new">
           </li><li className="profile dropdown" >
             <a  data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-              <div className="img" style={{backgroundImage: 'url("https://avatars3.githubusercontent.com/u/3959008?v=3&s=40")'}}>
-              </div>
-             
-              <span className="name" >  
-              <button onClick = {handleLogout} type="button" class="btn btn-default btn-sm">
-         <i class="fa fa-sign-out"> <span > Log out</span></i>
-        </button>
-        
-                   
-                
-                </span> 
-               {/*  <button onClick = {handleLogout}>A1abilities</button>*/}
+              <span className="name" >
+                <button onClick = {handleLogout} type="button" class="btn btn-default btn-sm">
+                  <i class="fa fa-sign-out"> <span > Log out</span></i>
+                </button>
+              </span> 
             </a>
-            
           </li>
         </ul>
 

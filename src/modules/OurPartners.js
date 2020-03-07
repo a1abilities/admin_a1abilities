@@ -14,9 +14,8 @@ export default function Partners(props){
   
   const fetchPartners = async () => {
     try{    
-      const result = await FetchAPI.getPartnersList({}); 
-      console.log('result',result)
-      setPartnersList(result.partnersList);
+      const result = await FetchAPI.getTabRelatedList({type: 'partners'});      
+      setPartnersList(result.resultList);
      
     }catch(e){
       console.log('Error...',e);

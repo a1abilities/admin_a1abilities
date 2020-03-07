@@ -31,8 +31,7 @@ export default function Editor(mainProps) {
   
 
 
-  const [inputs, setInputs] = useState({name:'', content: ''});
-  //const [image, setImage] = useState({});
+  const [inputs, setInputs] = useState({name:'', content: '', link: ''});  
 
   const handleChange  = (props) => {
     setInputs({...inputs, [props.target.name]: props.target.value});
@@ -40,11 +39,11 @@ export default function Editor(mainProps) {
 
   useEffect(() => {
     if(Object.keys(props)[2] === 'data'){
-      setInputs({name: props.data.title, content: props.data.content })
+      setInputs({name: props.data.title, content: props.data.content, link: props.data.link })
     }
   },[])
 
-  const selectImage = () => {
+  const selectImage = (e) => {    
     if(document.getElementById('upload_image').files && document.getElementById('upload_image').files[0]){
       let reader = new FileReader();
       reader.onload = (e) => {
@@ -58,35 +57,29 @@ export default function Editor(mainProps) {
   const handleSubmit = async () => {
     if(inputs.name !=='' && inputs.content !== ''){
       try{
-        if(operation==='add'){
-          const result = await FetchAPI.addFormContent({
-            type: type,
-            title: inputs.name,
-            content: inputs.content,      
-          });
-          console.log(result)
-          if(result.is_successful === true){
-            mainProps.history.push(pathLink);
-          }else {
-            alert('operation failed');
-          }
-        } else if(operation==='update'){
-          const result = await FetchAPI.updateFormContent({
-            type: type,
-            title: inputs.name,
-            content: inputs.content,
-            id: props.data.id,
-            image_id: props.data.image_id,
-            link_id: props.data.link_id,          
-          });
-          console.log(result)
-          if(result.is_successful === true){
-            console.log('jflsa')
-            mainProps.history.push(pathLink);
-          }
+        const data = {
+              operation: operation,
+              type: type,
+              title: inputs.name,
+              content: inputs.content,
+              link: inputs.link,
+            }
+        if(operation === 'update'){
+          data.id = props.data.id;
+          data.image_id = props.data.image_id;
+          data.link_id = props.data.link_id;
         }
-        
-        
+        let formData = new FormData();
+        formData.append('data', JSON.stringify(data));
+        formData.append('images', document.getElementById('upload_image').files[0]);
+        const response = await FetchAPI.addUpdateFormContent({ formData: formData });
+        if(response.is_successful === true){
+            mainProps.history.push(pathLink);
+        }else {
+          if(operation === 'add'){
+            alert('operation failed');
+          }            
+        }
       }catch(e){
         console.log('Error...',e);
       }
@@ -94,8 +87,6 @@ export default function Editor(mainProps) {
       alert('Need all fields')
     }
   }
-
-  
 
         return (
          <div>
@@ -115,7 +106,7 @@ export default function Editor(mainProps) {
 
 
                     <a href= {pathLink} >
-                    <button type="button" id="closeFrame" className="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button"  className="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">×</span>
                           <span className="sr-only">Close</span>
                         
@@ -131,9 +122,7 @@ export default function Editor(mainProps) {
                       <div className="form-group row">
                         <label className="col-sm-2 form-control-label text-xs-right" > Name: </label>
                         <div className="col-sm-10">
-
-                          <input className="form-control boxed" placeholder type="text" value = {inputs.name} name="name" onChange={handleChange } />
-                          
+                          <input className="form-control boxed" placeholder type="text" value = {inputs.name} name="name" onChange={handleChange } />                          
                         </div>
                       </div>
                       <div className="form-group row">
@@ -141,21 +130,23 @@ export default function Editor(mainProps) {
                         <div className="col-sm-10">
                           <textarea className="form-control boxed " rows="8" type="text" value = {inputs.content} name="content" onChange={handleChange } />
                         </div>
-                      </div>                     
+                      </div> 
+                      <div className="form-group row">
+                        <label className="col-sm-2 form-control-label text-xs-right"> Link: </label>
+                        <div className="col-sm-10">
+                        <input className="form-control boxed" placeholder type="text" value = {inputs.link} name="link" onChange={handleChange } />
+                        </div>
+                      </div> 
+                                          
                       <div className="form-group row">
                         <label className="col-sm-2 form-control-label text-xs-right"> Images: </label>
                         <div className="col-sm-10">
                           <div className="images-container">
-                            <div className="image-container">
-                              <div className="controls">
-                                <a href="#" className="control-btn remove" data-toggle="modal" data-target="#confirm-modal">
-                                  <i className="fa fa-trash-o" />
-                                </a>
-                              </div>
-                              <div id = "imagePreview" className="image" style={{backgroundImage: ''}} />  
-                              <img src=''/>                                    
-                            </div>
-                           
+                            <div className="image-container">                              
+                              <div id = "imagePreview" className="image" style={{backgroundImage: ``}} />  
+                              {/* <a href={API_URL + "/api/download?path=customer/" + inputs.id_proof }  download >{inputs.id_proof}</a> */}
+                              <img src=''/>
+                            </div>                           
                             <a href="#" className="add-image" data-toggle="modal" data-target="#modal-media">
                               <div className="image-container new">
                                 <div className="image">
@@ -178,7 +169,7 @@ export default function Editor(mainProps) {
                   <div className="modal-dialog modal-lg">
                     <div className="modal-content">
                       <div className="modal-header">
-                        <h4 className="modal-title">Media Library</h4>
+                        <h4 className="modal-title">Choose Image</h4>
                         <button type="button" id="closeFrame" className="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">×</span>
                           <span className="sr-only">Close</span>
@@ -187,35 +178,16 @@ export default function Editor(mainProps) {
                       <div className="modal-body modal-tab-container">
                         <ul className="nav nav-tabs modal-tabs" role="tablist">
                           <li className="nav-item">
-                            <a className="nav-link" href="#gallery" data-toggle="tab" role="tab">Gallery</a>
-                          </li>
-                          <li className="nav-item">
                             <a className="nav-link active" href="#upload" data-toggle="tab" role="tab">Upload</a>
                           </li>
                         </ul>
-                        <div className="tab-content modal-tab-content">
-                          <div className="tab-pane fade" id="gallery" role="tabpanel">
-                            <div className="images-container">
-                              <div className="row">
-                                <div className="col-6 col-sm-4 col-md-4 col-lg-3">
-                                  <div className="image-container">
-                                    <div className="image" style={{backgroundImage: 'url("https://s3.amazonaws.com/uifaces/faces/twitter/brad_frost/128.jpg")'}} />
-                                  </div>
-                                </div>                              
-                              </div>
-                            </div>
-                            <div className="modal-footer">
-                              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="button" className="btn btn-primary">Insert Selected</button>
-                            </div>
-                          </div>
-                          <div className="tab-pane fade active in" id="upload" role="tabpanel">
+                        <div className="tab-content modal-tab-content">                       
                             <div className="upload-container">
                               <div id="dropzone">
-                                <form action="/" method="POST" encType="multipart/form-data" className="dropzone needsclick dz-clickable" id="demo-upload">
+                              <form className="dropzone needsclick dz-clickable" id="demo-upload">
                                   <div className="dz-message-block">
-                                    <div className="dz-message needsclick">
-                                      <input accept="image/gif, image/jpeg, image/png, image/jpg"  style ={{display: 'none'}} id="upload_image" type="file" onChange ={selectImage} />
+                                    <div className="dz-message ">
+                                      <input accept="image/gif, image/jpeg, image/png, image/jpg"  style ={{display: 'none'}} id="upload_image" type="file" onChange ={(e) => {selectImage(e)}} />
                                         <label htmlFor="upload_image">
                                           Click to upload.
                                         </label>
@@ -224,42 +196,12 @@ export default function Editor(mainProps) {
                                 </form>
                               </div>
                             </div>
-                          </div>
                         </div>
                       </div>
-                      
                     </div>
                   </div>
-                </div>
-                <div className="modal fade" id="confirm-modal">
-                  <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <h4 className="modal-title"><i className="fa fa-warning" /> Alert</h4>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">×</span>
-                        </button>
-                      </div>
-                      <div className="modal-body">
-                        <p>Are you sure want to do this?</p>
-                      </div>
-                      <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" data-dismiss="modal">Yes</button>
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal">No</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-      
-                <div className="ref" id="ref">
-                  <div className="color-primary" />
-                  <div className="chart">
-                    <div className="color-primary" />
-                    <div className="color-secondary" />
-                  </div>
-                </div>
+                </div>              
               </div>
-
-              </div>
-            );      
+            </div>
+            );
         };

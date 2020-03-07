@@ -14,11 +14,9 @@ export default function Portfolio(props){
   const [portfolioList, setPortfolioList] = useState([]);
   
   const fetchPortfolio = async () => {
-    try{    
-      const result = await FetchAPI.getPortfolioList({}); 
-      console.log('result',result)
-      setPortfolioList(result.portfolioList);
-     
+    try{ 
+      const result = await FetchAPI.getTabRelatedList({type: 'portfolio'});
+      setPortfolioList(result.resultList);     
     }catch(e){
       console.log('Error...',e);
     }

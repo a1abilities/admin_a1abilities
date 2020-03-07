@@ -1,101 +1,71 @@
 const AppModel = require('../models/AppModels.js');
 
 
+const addUpdateFormContent = async function (req, res, next) {
+    const data = JSON.parse(req.body.data);
 
-const addFormContent = async function (req, res, next) {
+    let attachment = '';
+    if(req.files.length> 0) {attachment = req.files[0].filename};
+  
     const params = {
-        type: req.body.type,
-        title: req.body.title,
-        content: req.body.content,
-    }
-
-    console.log(params);
+        operation: data.operation,
+        type: data.type,
+        title: data.title,
+        content: data.content,
+        id: data.id,
+        image_id: data.image_id,
+        link_id: data.link_id,  
+        image_name: attachment,
+        link: data.link,
+        new_image_id: '',
+        new_link_id: '',        
+    }   
     try {
         const newActivity = new AppModel(params);
-        const result = await newActivity.addFormContent();
-        if(result.insertId > 0){
-            res.send({ result: result, is_successful : true });
-        }else{
-            res.send({ result: result, is_successful : false });
+        if(params.image_name !== '' && params.image_name !== undefined && params.image_name !== null){
+            const result = await newActivity.uploadImage();
+            params.new_image_id = result.insertId;
+            newActivity.new_image_id = result.insertId;            
+        }
+
+        if(params.link !== '' && params.link !== undefined && params.link !== null){
+            const result = await newActivity.insertLink();
+            params.new_link_id = result.insertId;
+            newActivity.new_link_id = result.insertId;            
         }
         
-    } catch (err) {
-        next(err);
-    }
-}
-
-const updateFormContent = async function (req, res, next) {
-    const params = {
-        type: req.body.type,
-        title: req.body.title,
-        content: req.body.content,
-        id: req.body.id,
-        image_id: req.body.image_id,
-        link_id: req.body.link_id,   
-    }
-
-    console.log(params);
-    try {
-        const newActivity = new AppModel(params);
-        const result = await newActivity.updateFormContent();
-        console.log(result)
-        if(result.changedRows > 0){
-            res.send({ result: result, is_successful : true });
-        }else{
-            res.send({ result: result, is_successful : false });
+        if (params.operation === 'add') {
+            const result = await newActivity.addFormContent();
+            if(result.insertId > 0){
+                res.send({ result: result, is_successful : true });
+            }else{
+                res.send({ result: result, is_successful : false });
+            }
+        } else if(params.operation === 'update'){
+            if(newActivity.new_image_id !== ''){ newActivity.image_id = newActivity.new_image_id }
+            if(newActivity.new_link_id !== ''){ newActivity.link_id = newActivity.new_link_id }
+            const result = await newActivity.updateFormContent();            
+            if(result.changedRows > 0){
+                res.send({ result: result, is_successful : true });
+            }else{
+                res.send({ result: result, is_successful : false });
+            }
         }
-    } catch (err) {
-        next(err);
+    } catch (error) {
+      next(error);
     }
-}
-
+  };
+  
 
 const login = async function (req, res, next) {
     const params = {
        username: req.body.username,
        password:req.body.password,
     }
-
-    // console.log(params);
     try {
         const newActivity = new AppModel(params);
         const result = await newActivity.login();
         res.send( result );
-
-        // if(result.length > 0){
-        //     res.send({ is_metched: true });
-        // }else{
-        //     res.send({ is_metched: false });
-        // }
-    } catch (err) {
-        next(err);
-    }
-}
-
-const getServicesList = async function (req, res, next) {
-    try {
-        const result = await new AppModel({}).getServicesList();
-        res.send({ serviceList: result });
-    } catch (err) {
-        next(err);
-    }
-}
-
-
-const getWhyusList = async function (req, res, next) {
-    try {
-        const result = await new AppModel({}).getWhyusList();
-        res.send({ whyUsList: result });
-    } catch (err) {
-        next(err);
-    }
-}
-
-
-const getAboutList = async function (req, res, next) {
-    try {
-        const result = await new AppModel({}).getAboutList();
-        res.send({ aboutList: result });
     } catch (err) {
         next(err);
     }
@@ -111,57 +81,101 @@ const getContactList = async function (req, res, next) {
     }
 }
 
-const getGoalsList = async function (req, res, next) {
-    try {
-        const result = await new AppModel({}).getGoalsList();
-        res.send({ goalsList: result });
-    } catch (err) {
-        next(err);
-    }
-}
 
-const getTechnologyList = async function (req, res, next) {
-    try {
-        const result = await new AppModel({}).getTechnologyList();
-        res.send({ technologyList: result });
-    } catch (err) {
-        next(err);
-    }
-}
 
-const getPartnersList = async function (req, res, next) {
+const getTabRelatedList = async function (req, res, next) {
     try {
-        const result = await new AppModel({}).getPartnersList();
-        res.send({ partnersList: result });
+        // console.log(req.body)
+        const result = await new AppModel({type: req.body.type}).getTabRelatedList();
+        console.log(result)
+        res.send({ resultList: result });
     } catch (err) {
         next(err);
     }
 }
 
 
-const getPortfolioList = async function (req, res, next) {
-    try {
-        const result = await new AppModel({}).getPortfolioList();
-        res.send({ portfolioList: result });
-    } catch (err) {
-        next(err);
-    }
-}
+// const getServicesList = async function (req, res, next) {
+//     try {
+//         const result = await new AppModel({}).getServicesList();
+//         res.send({ serviceList: result });
+//     } catch (err) {
+//         next(err);
+//     }
+// }
+
+
+
+// const getWhyusList = async function (req, res, next) {
+//     try {
+//         const result = await new AppModel({}).getWhyusList();
+//         res.send({ whyUsList: result });
+//     } catch (err) {
+//         next(err);
+//     }
+// }
+
+
+// const getGoalsList = async function (req, res, next) {
+//     try {
+//         const result = await new AppModel({}).getGoalsList();
+//         res.send({ goalsList: result });
+//     } catch (err) {
+//         next(err);
+//     }
+// }
+
+// const getTechnologyList = async function (req, res, next) {
+//     try {
+//         const result = await new AppModel({}).getTechnologyList();
+//         res.send({ technologyList: result });
+//     } catch (err) {
+//         next(err);
+//     }
+// }
+
+// const getPartnersList = async function (req, res, next) {
+//     try {
+//         const result = await new AppModel({}).getPartnersList();
+//         res.send({ partnersList: result });
+//     } catch (err) {
+//         next(err);
+//     }
+// }
+
+
+// const getPortfolioList = async function (req, res, next) {
+//     try {
+//         const result = await new AppModel({}).getPortfolioList();
+//         res.send({ portfolioList: result });
+//     } catch (err) {
+//         next(err);
+//     }
+// }
+
+// const getAboutList = async function (req, res, next) {
+//     try {
+//         const result = await new AppModel({}).getAboutList();
+//         res.send({ aboutList: result });
+//     } catch (err) {
+//         next(err);
+//     }
+// }
 
 
 
 
-module.exports = {
-    addFormContent: addFormContent,
-    getServicesList: getServicesList,
-    getWhyusList: getWhyusList,
-    getAboutList: getAboutList,
+module.exports = {    
+    addUpdateFormContent: addUpdateFormContent,
+    getTabRelatedList: getTabRelatedList,
     getContactList:getContactList,
-    getGoalsList:getGoalsList,
-    getTechnologyList:getTechnologyList,
-    getPartnersList:getPartnersList,
-    getPortfolioList:getPortfolioList,
-    updateFormContent: updateFormContent,
     login: login,
 
+    // getServicesList: getServicesList,
+    // getWhyusList: getWhyusList,
+    // getAboutList: getAboutList,    
+    // getGoalsList:getGoalsList,
+    // getTechnologyList:getTechnologyList,
+    // getPartnersList:getPartnersList,
+    // getPortfolioList:getPortfolioList,
 };
