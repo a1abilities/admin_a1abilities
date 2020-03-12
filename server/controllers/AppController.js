@@ -18,7 +18,10 @@ const addUpdateFormContent = async function (req, res, next) {
         image_name: attachment,
         link: data.link,
         new_image_id: '',
-        new_link_id: '',        
+        new_link_id: '',   
+        address: data.address,
+        email: data.email,     
+        mobile: data.mobile,     
     }   
     try {
         const newActivity = new AppModel(params);
@@ -44,7 +47,12 @@ const addUpdateFormContent = async function (req, res, next) {
         } else if(params.operation === 'update'){
             if(newActivity.new_image_id !== ''){ newActivity.image_id = newActivity.new_image_id }
             if(newActivity.new_link_id !== ''){ newActivity.link_id = newActivity.new_link_id }
-            const result = await newActivity.updateFormContent();            
+            let result = [];
+            if(params.type === 'contact'){
+                result = await newActivity.updateContactForm();
+            }else{
+                result = await newActivity.updateFormContent();                
+            }
             if(result.changedRows > 0){
                 res.send({ result: result, is_successful : true });
             }else{
@@ -75,7 +83,7 @@ const login = async function (req, res, next) {
 const getContactList = async function (req, res, next) {
     try {
         const result = await new AppModel({}).getContactList();
-        res.send({ contactList: result });
+        res.send({ resultList: result });
     } catch (err) {
         next(err);
     }
@@ -93,6 +101,32 @@ const getTabRelatedList = async function (req, res, next) {
         next(err);
     }
 }
+
+const changeState = async function (req, res, next) {
+    let params = {
+        type: req.body.type,
+        id : req.body.id,
+        is_active : req.body.is_active == 1 ? 0 :  req.body.is_active == 0 ? 1 :'',
+    }
+
+    try {
+        const activity = new AppModel(params);        
+        await activity.changeState();
+
+        let result =[];
+        if(params.type === 'contact'){
+            result = await activity.getContactList();
+        }else{
+            result = await activity.getTabRelatedList();
+        }
+        
+        res.send({ resultList: result });
+    } catch (err) {
+        next(err);
+    }
+}
+
+
 
 
 // const getServicesList = async function (req, res, next) {
@@ -170,6 +204,7 @@ module.exports = {
     getTabRelatedList: getTabRelatedList,
     getContactList:getContactList,
     login: login,
+    changeState: changeState,
 
     // getServicesList: getServicesList,
     // getWhyusList: getWhyusList,

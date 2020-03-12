@@ -32,6 +32,13 @@ export default function About(props){
 
   const handleActiveDeactive = async (data) => {
     console.log('handleActiveDeactive',data)
+    try{    
+      const result = await FetchAPI.changeState({type: 'about', id: data.id, is_active: data.is_active});
+      setAboutList(result.resultList);
+      // console.log('result',result)
+    }catch(e){
+      console.log('Error...',e);
+    }
   }
         return (
           <div>

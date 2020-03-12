@@ -32,6 +32,13 @@ export default function Partners(props){
 
   const handleActiveDeactive = async (data) => {
     console.log('handleActiveDeactive',data)
+    try{    
+      const result = await FetchAPI.changeState({type: 'partners', id: data.id, is_active: data.is_active});
+      setPartnersList(result.resultList);
+      // console.log('result',result)
+    }catch(e){
+      console.log('Error...',e);
+    }
   }
         return (
           <div>

@@ -18,6 +18,7 @@ const upload = multer({ storage: storage });
 
 Routing.route("/addUpdateFormContent").post(upload.array('images'), AppController.addUpdateFormContent);
 Routing.route("/getTabRelatedList").post(AppController.getTabRelatedList);
+Routing.route("/changeState").post(AppController.changeState);
 Routing.route("/getContactList").get(AppController.getContactList);
 Routing.route("/login").post(AppController.login);
 

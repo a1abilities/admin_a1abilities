@@ -32,7 +32,15 @@ export default function Goals(props){
 
   const handleActiveDeactive = async (data) => {
     console.log('handleActiveDeactive',data)
+    try{    
+      const result = await FetchAPI.changeState({type: 'goals', id: data.id, is_active: data.is_active});
+      setGoalsList(result.resultList);
+      // console.log('result',result)
+    }catch(e){
+      console.log('Error...',e);
+    }
   }
+
         return (
           <div>
                  <Header {...props}/>

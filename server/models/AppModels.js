@@ -14,6 +14,10 @@ const AppModel = function (params) {
   this.new_image_id = params.new_image_id;
   this.link = params.link;
   this.new_link_id = params.new_link_id;
+  this.address= params.address;
+  this.email= params.email;
+  this.mobile = params.mobile;
+  this.is_active = params.is_active;
 };
 
 
@@ -98,6 +102,27 @@ return new Promise(function (resolve, reject) {
 }
 
 
+
+AppModel.prototype.updateContactForm = function () {
+  const that = this;
+return new Promise(function (resolve, reject) {
+  connection.getConnection(function (error, connection) {
+    if (error) {
+      throw error;
+    }
+   
+
+    connection.changeUser({database : dbName});
+    connection.query('UPDATE contact SET email = "'+that.email+'", address = "' + that.address + '", mobile = "' +that.mobile+ '" WHERE id = "'+that.id+'"', function (error, rows, fields) { 
+      if (error) {  console.log("Error...", error); reject(error);  }          
+      resolve(rows);              
+    });
+      connection.release();
+      console.log('Process Complete %d', connection.threadId);
+  });
+});
+}
+
 AppModel.prototype.getTabRelatedList = function () {
   const that = this;
   return new Promise(function (resolve, reject) {
@@ -158,6 +183,31 @@ AppModel.prototype.login = function () {
 } 
 
 
+AppModel.prototype.changeState = function () {
+  const that = this;
+  return new Promise(function (resolve, reject) {
+    connection.getConnection(function (error, connection) {
+      if (error) {
+        throw error;
+      }
+
+      connection.changeUser({database : dbName});
+      if(that.type === 'contact'){
+        connection.query('UPDATE contact SET is_active  = "'+ that.is_active +'" WHERE id = "'+that.id+'"', function (error, rows, fields) { 
+          if (error) {  console.log("Error...", error); reject(error);  }          
+          resolve(rows);              
+        });
+      }else{
+        connection.query('UPDATE website_content SET is_active  = "'+ that.is_active +'" WHERE id = "'+that.id+'"', function (error, rows, fields) { 
+          if (error) {  console.log("Error...", error); reject(error);  }          
+          resolve(rows);              
+        });
+      }      
+        connection.release();
+        console.log('Process Complete %d', connection.threadId);
+    });
+  });
+} 
 
 // AppModel.prototype.getServicesList = function () {
 //   return new Promise(function (resolve, reject) {

@@ -16,8 +16,7 @@ export default function Contact(props){
   const fetchContact = async () => {
     try{    
       const result = await FetchAPI.getContactList({});      
-      setContactList(result.contactList);
-      console.log('result',result)
+      setContactList(result.resultList);
     }catch(e){
       console.log('Error...',e);
     }
@@ -31,9 +30,18 @@ export default function Contact(props){
   //   console.log('handleUpdate',data)
   // }
 
+
   const handleActiveDeactive = async (data) => {
     console.log('handleActiveDeactive',data)
+    try{    
+      const result = await FetchAPI.changeState({type: 'contact', id: data.id, is_active: data.is_active});
+      setContactList(result.resultList);
+      // console.log('result',result)
+    }catch(e){
+      console.log('Error...',e);
+    }
   }
+
         return (
           <div>
                  <Header {...props}/>

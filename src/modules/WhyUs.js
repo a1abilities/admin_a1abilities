@@ -29,6 +29,13 @@ export default function Whyus(props){
 
   const handleActiveDeactive = async (data) => {
     console.log('handleActiveDeactive',data)
+    try{    
+      const result = await FetchAPI.changeState({type: 'whyus', id: data.id, is_active: data.is_active});
+      setWyusList(result.resultList);
+      // console.log('result',result)
+    }catch(e){
+      console.log('Error...',e);
+    }
   }
         return (
           <div>

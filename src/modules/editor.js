@@ -12,7 +12,7 @@ export default function Editor(mainProps) {
   const type = props.type;
   const operation = props.operation;
 
- 
+ console.log(props)
 
   let pathLink = '';
   let titleText = '';
@@ -31,7 +31,7 @@ export default function Editor(mainProps) {
   
 
 
-  const [inputs, setInputs] = useState({name:'', content: '', link: ''});  
+  const [inputs, setInputs] = useState({name:'', content: '', link: '', address:'', email:'', mobile: ''});  
 
   const handleChange  = (props) => {
     setInputs({...inputs, [props.target.name]: props.target.value});
@@ -39,7 +39,7 @@ export default function Editor(mainProps) {
 
   useEffect(() => {
     if(Object.keys(props)[2] === 'data'){
-      setInputs({name: props.data.title, content: props.data.content, link: props.data.link })
+      setInputs({name: props.data.title, content: props.data.content, link: props.data.link, address: props.data.address , email: props.data.email, mobile: props.data.mobile  })
     }
   },[])
 
@@ -51,6 +51,27 @@ export default function Editor(mainProps) {
       };
       reader.readAsDataURL(document.getElementById('upload_image').files[0]);
       document.getElementById('closeFrame').click();
+    }
+  }
+
+  const handleContactSubmit  = async  ()=> {
+    if(inputs.content !=='' && inputs.address !== '' && inputs.email !== ''){
+      const data = {
+        id : props.data.id,
+        operation: operation,
+        type: type,
+        address: inputs.address,
+        mobile: inputs.mobile,
+        email: inputs.email,
+      }
+      let formData = new FormData();
+      formData.append('data', JSON.stringify(data));
+      const response = await FetchAPI.addUpdateFormContent({ formData: formData });
+      if(response.is_successful === true){
+        mainProps.history.push(pathLink);
+      }
+    }else{
+      alert('Need all fields')
     }
   }
 
@@ -119,6 +140,33 @@ export default function Editor(mainProps) {
                   </div>
                   <form name="item">
                     <div className="card card-block">
+                      {type === 'contact' ? <div>
+                      <div className="form-group row">
+                        <label className="col-sm-2 form-control-label text-xs-right" > Address: </label>
+                        <div className="col-sm-10">
+                          <input className="form-control boxed" placeholder type="text" value = {inputs.address} name="address" onChange={handleChange } />                          
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <label className="col-sm-2 form-control-label text-xs-right" > Mobile: </label>
+                        <div className="col-sm-10">
+                          <input className="form-control boxed" placeholder type="text" value = {inputs.mobile} name="mobile" onChange={handleChange } />                          
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <label className="col-sm-2 form-control-label text-xs-right" > Email: </label>
+                        <div className="col-sm-10">
+                          <input className="form-control boxed" placeholder type="text" value = {inputs.email} name="email" onChange={handleChange } />                          
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <div className="col-sm-10 col-sm-offset-2">
+                          <button type="button"  className="btn btn-primary" onClick={handleContactSubmit}>   Submit </button>
+                        </div>
+                      </div>
+                      </div>
+                      :
+<div>
                       <div className="form-group row">
                         <label className="col-sm-2 form-control-label text-xs-right" > Name: </label>
                         <div className="col-sm-10">
@@ -162,6 +210,7 @@ export default function Editor(mainProps) {
                           <button type="button"  className="btn btn-primary" onClick={handleSubmit}>   Submit </button>
                         </div>
                       </div>
+                    </div>}
                     </div>
                   </form>
                 </article>

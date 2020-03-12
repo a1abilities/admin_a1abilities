@@ -32,6 +32,13 @@ export default function Portfolio(props){
 
   const handleActiveDeactive = async (data) => {
     console.log('handleActiveDeactive',data)
+    try{    
+      const result = await FetchAPI.changeState({type: 'portfolio', id: data.id, is_active: data.is_active});
+      setPortfolioList(result.resultList);
+      // console.log('result',result)
+    }catch(e){
+      console.log('Error...',e);
+    }
   }
         return (
           <div>
