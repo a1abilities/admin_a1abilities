@@ -8,7 +8,7 @@ const PARAMS = ({ methodType = 'GET' }) => ({
   // headers: { 'content-type': 'application/json', },  
   headers: authHeader(),
 });
-
+console.log('API_CONSUMER: ', c.API_CONSUMER)
 export default {
 
   

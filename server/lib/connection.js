@@ -1,15 +1,21 @@
 const MySQL = require("mysql");
-
 let dbOptions = '';
 const { env, dbName } = require("./databaseMySQL");
+
+if (env === 'prod') {
    dbOptions = {
       host: 'localhost',
       user: 'root',
-      port: 3306,
-      password: '',
-      database: dbName,
+      password:'6mNMX9Ln0oykXKic',
+      port: 3306
    };
-
+} else {
+   dbOptions = {
+      host: 'localhost',
+      user: 'root',
+      password: '',
+   };
+}
 
 
 let connectionPool = MySQL.createPool({ host: dbOptions.host, user: dbOptions.user, password: dbOptions.password, port: dbOptions.port, database: dbName });
