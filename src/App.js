@@ -17,6 +17,9 @@ const Services = lazy(()=> import('./modules/Services'));
 const OurTechnology = lazy(()=> import('./modules/OurTechnology'));
 const Editor = lazy(()=> import('./modules/editor'));
 
+const Introduction = lazy(()=> import('./modules/Introduction'));
+const Aboutgc = lazy(()=> import('./modules/Aboutgc'));
+const DimpleAnil = lazy(()=> import('./modules/DimpleAnil'));
 
 
 
@@ -53,6 +56,14 @@ function App() {
                 <Route exact path="/OurPartners" render={props => { return APP_TOKEN.notEmpty ? <OurPartners {...props} />  :  <Redirect to="/login" />  }} />
                 <Route exact path="/Portfolio" render={props => { return APP_TOKEN.notEmpty ? <Portfolio {...props} />  :  <Redirect to="/login" />  }} />                
                 <Route exact path="/login" render={props => { return APP_TOKEN.notEmpty ? <Redirect to="/home" /> :  <Login {...props} /> }}  />     
+             
+                <Route exact path="/Introduction" render={props => { return APP_TOKEN.notEmpty ? <Introduction {...props} />  :  <Redirect to="/login" />  }} />                
+                {/* <Route exact path="/Aboutgc" render={props => { return APP_TOKEN.notEmpty ? <Redirect to="/home" /> :  <Login {...props} /> }}  />      */}
+                <Route exact path="/DimpleAnil" render={props => { return APP_TOKEN.notEmpty ? <DimpleAnil {...props} />  :  <Redirect to="/login" />  }} />                
+              
+                <Route exact path="/Aboutgc" render={props => { return APP_TOKEN.notEmpty ? <Aboutgc {...props} />  :  <Redirect to="/login" />  }} />                
+             
+             
               </Switch>
             </Suspense>
           </Router>

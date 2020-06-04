@@ -49,7 +49,7 @@ export default function Technology(props){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title"> Our Technology 
+                      <h1 className="title"> Miracles
            <Link to= {{pathname:"/editor", state : {type:'technology', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
                       </h1>
                       <p className="title-description"></p>
@@ -68,7 +68,7 @@ export default function Technology(props){
                                     <thead>
                                       <tr>
                                         <th>S No.</th>
-                                        <th>Our Technology Name </th>
+                                        <th>Miracles </th>
                                         <th>Update</th>
                                         <th>Delete</th>
                                       </tr>

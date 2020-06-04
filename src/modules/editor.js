@@ -1,7 +1,7 @@
 import React, {useState, useEffect } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
-import {Redirect} from 'react-router-dom';
+
 
 
 // import api
@@ -26,7 +26,10 @@ export default function Editor(mainProps) {
     case 'about'      : titleText = 'About us'      ; pathLink = '/About'; break;
     case 'goals'      : titleText = 'Our Goals'     ; pathLink = '/OurGoals'; break;
     case 'portfolio'  : titleText = 'Portfolio'     ; pathLink = '/Portfolio'; break;
-
+  
+    case 'DimpleAnil'  : titleText = 'DimpleAnil'     ; pathLink = '/DimpleAnil'; break;
+    case 'AboutGC'  : titleText = 'AboutGC'     ; pathLink = '/AboutGC'; break;
+    case 'Introduction'  : titleText = 'Introduction'     ; pathLink = '/Introduction'; break;
  }
   
 

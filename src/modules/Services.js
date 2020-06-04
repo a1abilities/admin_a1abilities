@@ -46,7 +46,7 @@ export default function Services(props){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title"> Our Services 
+                      <h1 className="title"> Events
                      
 
                       <Link to= {{pathname:"/editor", state : {type:'services', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
@@ -68,7 +68,7 @@ export default function Services(props){
                                     <thead>
                                       <tr>
                                         <th>S No.</th>
-                                        <th>Our Technology Name </th>
+                                        <th> Events </th>
                                         <th>Update</th>
                                         <th>Delete</th>
                                       </tr>

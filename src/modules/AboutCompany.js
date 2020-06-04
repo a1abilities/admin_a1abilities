@@ -49,7 +49,7 @@ export default function About(props){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title"> About Company  
+                      <h1 className="title"> About
               <Link to= {{pathname:"/editor", state : {type:'about', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
                         </h1>
                      <p className="title-description"></p>
@@ -68,7 +68,7 @@ export default function About(props){
                                     <thead>
                                       <tr>
                                         <th>S No.</th>
-                                        <th>About Company </th>
+                                        <th>About  </th>
                                         <th> Update</th>
                                         <th>  Delete</th>
                                       </tr>

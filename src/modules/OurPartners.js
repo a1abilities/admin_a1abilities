@@ -49,7 +49,7 @@ export default function Partners(props){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title"> Our Partners 
+                      <h1 className="title">Prayer's
                 <Link to= {{pathname:"/editor", state : {type:'partners', operation: 'add'}}}><button type="button" style={{float: 'right' }} className="btn btn-success-outline">Add</button></Link>
                       </h1> 
                    <p className="title-description"></p>
@@ -68,7 +68,7 @@ export default function Partners(props){
                                     <thead>
                                       <tr>
                                         <th>S No.</th>
-                                        <th>Our Partners Name </th>
+                                        <th>Prayer's </th>
                                         <th> Update</th>
                                         <th> Delete</th>
                                       </tr>

@@ -49,7 +49,7 @@ export default function Portfolio(props){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title"> Portfolio  
+                      <h1 className="title"> OBE'S
                       <Link to= {{pathname:"/editor", state : {type:'portfolio', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
                       </h1>
                       <p className="title-description"></p>
@@ -68,7 +68,7 @@ export default function Portfolio(props){
                                     <thead>
                                       <tr>
                                         <th>S No.</th>
-                                        <th>Portfolio Name </th>
+                                        <th>OBE'S </th>
                                         <th> Update</th>
                                         <th>  Delete</th>
                                       </tr>

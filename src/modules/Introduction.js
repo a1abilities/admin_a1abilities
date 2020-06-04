@@ -9,13 +9,13 @@ import { Link } from 'react-router-dom';
 // import api
 import FetchAPI from '../api/APIs.js';
 
-export default function Goals(props){
-  const [GoalsList, setGoalsList] = useState([]);
+export default function Introduction(props){
+  const [IntroductionList, setIntroductionList] = useState([]);
   
-  const fetchGoals = async () => {
+  const fetchIntroduction = async () => {
     try{    
-      const result = await FetchAPI.getTabRelatedList({type: 'goals'});      
-      setGoalsList(result.resultList);
+      const result = await FetchAPI.getTabRelatedList({type: 'Introduction'});      
+      setIntroductionList(result.resultList);
       // console.log('result',result)
     }catch(e){
       console.log('Error...',e);
@@ -23,7 +23,7 @@ export default function Goals(props){
   }
 
   useEffect(() => {
-   fetchGoals();
+   fetchIntroduction();
   },[]);
 
   const handleUpdate = async (data) => {
@@ -33,8 +33,8 @@ export default function Goals(props){
   const handleActiveDeactive = async (data) => {
     console.log('handleActiveDeactive',data)
     try{    
-      const result = await FetchAPI.changeState({type: 'goals', id: data.id, is_active: data.is_active});
-      setGoalsList(result.resultList);
+      const result = await FetchAPI.changeState({type: 'Introduction', id: data.id, is_active: data.is_active});
+      setIntroductionList(result.resultList);
       // console.log('result',result)
     }catch(e){
       console.log('Error...',e);
@@ -50,8 +50,8 @@ export default function Goals(props){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title">Direction's
-          <Link to= {{pathname:"/editor", state : {type:'goals', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                      <h1 className="title">Introduction
+          <Link to= {{pathname:"/editor", state : {type:'Introduction', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
                       </h1>
                       <p className="title-description"></p>
                     </div>
@@ -69,18 +69,18 @@ export default function Goals(props){
                                     <thead>
                                       <tr>
                                         <th>S No.</th>
-                                        <th>Direction's </th>
+                                        <th> Introduction </th>
                                         <th> Update</th>
                                         <th> Delete</th>
                                       </tr>
                                     </thead>
                                     <tbody>
-                                    {GoalsList.map((data, index) => {
+                                    {IntroductionList.map((data, index) => {
                                           return(
                                             <tr>
                                               <td>{index+1}</td>
                                               <td>{data.title}</td>
-                                              <td><Link to= {{pathname:"/editor", state : {type:'portfolio', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
+                                              <td><Link to= {{pathname:"/editor", state : {type:'Introduction', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
                                               <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
                                             </tr>    
                                           )                               
