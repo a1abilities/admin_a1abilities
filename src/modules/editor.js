@@ -19,7 +19,6 @@ export default function Editor(mainProps) {
   switch(type){
 
     case 'Events'        :   titleText = 'Events'        ; pathLink = '/Events';  break;
-    
     case 'Directions'    :   titleText = 'Directions'    ; pathLink = '/Directions'; break;
     case 'DimpleAnil'    :   titleText = 'DimpleAnil'    ; pathLink = '/DimpleAnil'; break;
     case 'AboutGC'       :   titleText = 'AboutGC'       ; pathLink = '/AboutGC'; break;
