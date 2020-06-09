@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react';
+import { Component } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
+
+
 import { Link } from 'react-router-dom';
 
 
 // import api
 import FetchAPI from '../api/APIs.js';
 
-export default function Services(props){
-  const [serviceList, setServiceList] = useState([]);
+export default function Miracles(props){
+  const [MiraclesList, setMiraclesList] = useState([]);
   
-  const fetchServices = async () => {
-    try{    
-      const result = await FetchAPI.getTabRelatedList({type: 'services'});
-      setServiceList(result.resultList);
+  const fetchMiracles = async () => {
+    try{       
+      const result = await FetchAPI.getTabRelatedList({type: 'Miracles'});      
+      setMiraclesList(result.resultList);     
     }catch(e){
       console.log('Error...',e);
     }
   }
 
   useEffect(() => {
-   fetchServices();
+   fetchMiracles();
   },[]);
 
   const handleUpdate = async (data) => {
@@ -30,8 +33,8 @@ export default function Services(props){
   const handleActiveDeactive = async (data) => {
     console.log('handleActiveDeactive',data)
     try{    
-      const result = await FetchAPI.changeState({type: 'services', id: data.id, is_active: data.is_active});
-      setServiceList(result.resultList);
+      const result = await FetchAPI.changeState({type: 'Miracles', id: data.id, is_active: data.is_active});
+      setMiraclesList(result.resultList);
       // console.log('result',result)
     }catch(e){
       console.log('Error...',e);
@@ -46,13 +49,10 @@ export default function Services(props){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title"> Events
-                     
-
-                      <Link to= {{pathname:"/editor", state : {type:'services', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                      <h1 className="title"> Miracles
+           <Link to= {{pathname:"/editor", state : {type:'Miracles', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
                       </h1>
                       <p className="title-description"></p>
-                      
                     </div>
                     <section className="section">
                       <div className="row">
@@ -68,18 +68,20 @@ export default function Services(props){
                                     <thead>
                                       <tr>
                                         <th>S No.</th>
-                                        <th> Events </th>
+                                        <th>Miracles </th>
                                         <th>Update</th>
                                         <th>Delete</th>
                                       </tr>
                                     </thead>
-                                    <tbody>                                        
-                                        {serviceList.map((data, index) => {
+                                    <tbody>
+                                    {MiraclesList.map((data, index) => {
                                           return(
                                             <tr>
                                               <td>{index+1}</td>
                                               <td>{data.title}</td>
-                                              <td><Link to= {{pathname:"/editor", state : {type:'services', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
+                                              
+                                              <td><Link to= {{pathname:"/editor", state : {type:'Miracles', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
+
                                               <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
                                             </tr>    
                                           )                               

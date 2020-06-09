@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Component } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
 
@@ -10,20 +9,21 @@ import { Link } from 'react-router-dom';
 // import api
 import FetchAPI from '../api/APIs.js';
 
-export default function Portfolio(props){
-  const [portfolioList, setPortfolioList] = useState([]);
+export default function Directions(props){
+  const [DirectionsList, setDirectionsList] = useState([]);
   
-  const fetchPortfolio = async () => {
-    try{ 
-      const result = await FetchAPI.getTabRelatedList({type: 'portfolio'});
-      setPortfolioList(result.resultList);     
+  const fetchDirections = async () => {
+    try{    
+      const result = await FetchAPI.getTabRelatedList({type: 'Directions'});      
+      setDirectionsList(result.resultList);
+      // console.log('result',result)
     }catch(e){
       console.log('Error...',e);
     }
   }
 
   useEffect(() => {
-   fetchPortfolio();
+   fetchDirections();
   },[]);
 
   const handleUpdate = async (data) => {
@@ -33,13 +33,14 @@ export default function Portfolio(props){
   const handleActiveDeactive = async (data) => {
     console.log('handleActiveDeactive',data)
     try{    
-      const result = await FetchAPI.changeState({type: 'portfolio', id: data.id, is_active: data.is_active});
-      setPortfolioList(result.resultList);
+      const result = await FetchAPI.changeState({type: 'Directions', id: data.id, is_active: data.is_active});
+      setDirectionsList(result.resultList);
       // console.log('result',result)
     }catch(e){
       console.log('Error...',e);
     }
   }
+
         return (
           <div>
                  <Header {...props}/>
@@ -49,8 +50,8 @@ export default function Portfolio(props){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title"> OBE'S
-                      <Link to= {{pathname:"/editor", state : {type:'portfolio', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                      <h1 className="title">Direction's
+          <Link to= {{pathname:"/editor", state : {type:'Directions', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
                       </h1>
                       <p className="title-description"></p>
                     </div>
@@ -68,18 +69,19 @@ export default function Portfolio(props){
                                     <thead>
                                       <tr>
                                         <th>S No.</th>
-                                        <th>OBE'S </th>
+                                        <th>Direction's </th>
                                         <th> Update</th>
-                                        <th>  Delete</th>
+                                        <th> Delete</th>
                                       </tr>
                                     </thead>
                                     <tbody>
-                                    {portfolioList.map((data, index) => {
+                                    {DirectionsList.map((data, index) => {
                                           return(
                                             <tr>
                                               <td>{index+1}</td>
                                               <td>{data.title}</td>
-                                              <td><Link to= {{pathname:"/editor", state : {type:'portfolio', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
+                                              
+                                              <td><Link to= {{pathname:"/editor", state : {type:'Directions', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
                                               <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
                                             </tr>    
                                           )                               

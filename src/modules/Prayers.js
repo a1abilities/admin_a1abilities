@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Component } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
 
@@ -9,21 +10,20 @@ import { Link } from 'react-router-dom';
 // import api
 import FetchAPI from '../api/APIs.js';
 
-export default function Partners(props){
-  const [partnersList, setPartnersList] = useState([]);
+export default function Prayers(props){
+  const [PrayersList, setPrayersList] = useState([]);
   
-  const fetchPartners = async () => {
-    try{    
-      const result = await FetchAPI.getTabRelatedList({type: 'partners'});      
-      setPartnersList(result.resultList);
-     
+  const fetchPrayers = async () => {
+    try{ 
+      const result = await FetchAPI.getTabRelatedList({type: 'Prayers'});
+      setPrayersList(result.resultList);     
     }catch(e){
       console.log('Error...',e);
     }
   }
 
   useEffect(() => {
-   fetchPartners();
+   fetchPrayers();
   },[]);
 
   const handleUpdate = async (data) => {
@@ -33,8 +33,8 @@ export default function Partners(props){
   const handleActiveDeactive = async (data) => {
     console.log('handleActiveDeactive',data)
     try{    
-      const result = await FetchAPI.changeState({type: 'partners', id: data.id, is_active: data.is_active});
-      setPartnersList(result.resultList);
+      const result = await FetchAPI.changeState({type: 'Prayers', id: data.id, is_active: data.is_active});
+      setPrayersList(result.resultList);
       // console.log('result',result)
     }catch(e){
       console.log('Error...',e);
@@ -49,10 +49,10 @@ export default function Partners(props){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title">Prayer's
-                <Link to= {{pathname:"/editor", state : {type:'partners', operation: 'add'}}}><button type="button" style={{float: 'right' }} className="btn btn-success-outline">Add</button></Link>
-                      </h1> 
-                   <p className="title-description"></p>
+                      <h1 className="title"> Prayers
+                      <Link to= {{pathname:"/editor", state : {type:'Prayers', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                      </h1>
+                      <p className="title-description"></p>
                     </div>
                     <section className="section">
                       <div className="row">
@@ -68,18 +68,18 @@ export default function Partners(props){
                                     <thead>
                                       <tr>
                                         <th>S No.</th>
-                                        <th>Prayer's </th>
+                                        <th>Prayers</th>
                                         <th> Update</th>
-                                        <th> Delete</th>
+                                        <th>  Delete</th>
                                       </tr>
                                     </thead>
                                     <tbody>
-                                    {partnersList.map((data, index) => {
+                                    {PrayersList.map((data, index) => {
                                           return(
                                             <tr>
                                               <td>{index+1}</td>
                                               <td>{data.title}</td>
-                                              <td><Link to= {{pathname:"/editor", state : {type:'partners', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
+                                              <td><Link to= {{pathname:"/editor", state : {type:'Prayers', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
                                               <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
                                             </tr>    
                                           )                               

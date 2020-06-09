@@ -18,6 +18,10 @@ const AppModel = function (params) {
   this.email= params.email;
   this.mobile = params.mobile;
   this.is_active = params.is_active;
+
+  this.imageId = params.imageId;
+  this.picType = params.picType;
+  this.documentName = params.documentName;
 };
 
 
@@ -39,6 +43,78 @@ AppModel.prototype.uploadImage = function () {
   });
 });
 }
+
+
+AppModel.prototype.uploadProductImage = function () {
+  const that = this;
+  return new Promise(function (resolve, reject) {
+    connection.getConnection(function (error, connection) {
+      if (error) {
+        throw error;
+      }
+      connection.changeUser({database : dbName});
+      connection.query(`UPDATE images SET is_active = 0 WHERE type = 'bannerImage'`, function (error, rows, fields) {
+        if (error) {  console.log("Error...", error); reject(error);  }
+        
+        const VALUES = [0, "bannerImage", that.documentName, 1];
+        let Query = `INSERT INTO images(module_id, type, image_name, is_active) VALUES(?)`;
+        connection.query(Query, [VALUES], function (error, rows, fields) {
+          if (error) {  console.log("Error...", error); reject(error);  }
+          resolve(rows.insertId);
+        });
+
+      });
+
+      
+        connection.release();
+        console.log('Process Complete %d', connection.threadId);
+    });
+  });
+} 
+
+
+
+AppModel.prototype.getPrevBannerImage = function () {
+  const that = this;
+  return new Promise(function (resolve, reject) {
+    connection.getConnection(function (error, connection) {
+      if (error) {
+        throw error;
+      }
+      connection.changeUser({database : dbName});
+      connection.query(`SELECT * FROM images WHERE type = 'bannerImage'`, function (error, rows, fields) {
+        if (error) {  console.log("Error...", error); reject(error);  }       
+            resolve(rows);
+        });
+        connection.release();
+        console.log('Process Complete %d', connection.threadId);
+    });
+  });
+} 
+
+
+AppModel.prototype.changeProductImage = function () {
+  const that = this;
+  return new Promise(function (resolve, reject) {
+    connection.getConnection(function (error, connection) {
+      if (error) {
+        throw error;
+      }
+      connection.changeUser({database : dbName});
+      connection.query(`UPDATE images SET is_active = 0 WHERE type = 'bannerImage'`, function (error, rows, fields) {
+        if (error) {  console.log("Error...", error); reject(error);  }
+       
+        connection.query(`UPDATE images SET is_active = 1 WHERE id = ${that.imageId}`, function (error, rows, fields) {
+          if (error) {  console.log("Error...", error); reject(error);  }
+            resolve(rows.insertId);
+        });
+      });
+        connection.release();
+        console.log('Process Complete %d', connection.threadId);
+    });
+  });
+} 
+
 
 
 AppModel.prototype.insertLink = function () {
@@ -131,8 +207,9 @@ AppModel.prototype.getTabRelatedList = function () {
         throw error;
       }
       connection.changeUser({database : dbName});
-      connection.query('SELECT wc.*, i.image_name, l.website_link as link FROM website_content as wc LEFT JOIN images as i ON wc.image_id = i.id LEFT JOIN links as l ON l.id = wc.link_id WHERE type = "' +that.type+ '"', function (error, rows, fields) { 
-        if (error) {  console.log("Error...", error); reject(error);  }          
+      connection.query('SELECT wc.*,i.type, i.image_name, l.website_link as link FROM website_content as wc LEFT JOIN images as i ON wc.image_id = i.id LEFT JOIN links as l ON l.id = wc.link_id WHERE i.type = "' +that.type+ '"', function (error, rows, fields) { 
+        if (error) {  console.log("Error...", error); reject(error);  }   
+              
         resolve(rows);              
       });
         connection.release();
@@ -208,136 +285,5 @@ AppModel.prototype.changeState = function () {
     });
   });
 } 
-
-// AppModel.prototype.getServicesList = function () {
-//   return new Promise(function (resolve, reject) {
-//     connection.getConnection(function (error, connection) {
-//       if (error) {
-//         throw error;
-//       }
-
-//       connection.changeUser({database : dbName});
-//       connection.query('SELECT * FROM website_content WHERE type = \'services\'', function (error, rows, fields) { 
-//         if (error) {  console.log("Error...", error); reject(error);  }          
-//         resolve(rows);              
-//       });
-//         connection.release();
-//         console.log('Process Complete %d', connection.threadId);
-//     });
-//   });
-// }
-
-
-
-// AppModel.prototype.getWhyusList = function () {
-//     return new Promise(function (resolve, reject) {
-//       connection.getConnection(function (error, connection) {
-//         if (error) {
-//           throw error;
-//         }
-  
-//         connection.changeUser({database : dbName});
-//         connection.query('SELECT * FROM website_content WHERE type = \'whyus\'', function (error, rows, fields) { 
-//           if (error) {  console.log("Error...", error); reject(error);  }          
-//           resolve(rows);              
-//         });
-//           connection.release();
-//           console.log('Process Complete %d', connection.threadId);
-//       });
-//     });
-//   }
-
-
-// AppModel.prototype.getAboutList = function () {
-//     return new Promise(function (resolve, reject) {
-//       connection.getConnection(function (error, connection) {
-//         if (error) {
-//           throw error;
-//         }
-  
-//         connection.changeUser({database : dbName});
-//         connection.query('SELECT * FROM website_content WHERE type = \'about\'', function (error, rows, fields) { 
-//           if (error) {  console.log("Error...", error); reject(error);  }          
-//           resolve(rows);              
-//         });
-//           connection.release();
-//           console.log('Process Complete %d', connection.threadId);
-//       });
-//     });
-//   }
-
-
-// AppModel.prototype.getGoalsList = function () {
-//     return new Promise(function (resolve, reject) {
-//       connection.getConnection(function (error, connection) {
-//         if (error) {
-//           throw error;
-//         }
-  
-//         connection.changeUser({database : dbName});
-//         connection.query('SELECT * FROM website_content WHERE type = \'goals\'', function (error, rows, fields) { 
-//           if (error) {  console.log("Error...", error); reject(error);  }          
-//           resolve(rows);              
-//         });
-//           connection.release();
-//           console.log('Process Complete %d', connection.threadId);
-//       });
-//     });
-//   }
-
-
-// AppModel.prototype.getTechnologyList = function () {
-//     return new Promise(function (resolve, reject) {
-//       connection.getConnection(function (error, connection) {
-//         if (error) {
-//           throw error;
-//         }
-  
-//         connection.changeUser({database : dbName});
-//         connection.query('SELECT * FROM website_content WHERE type = \'technology\'', function (error, rows, fields) { 
-//           if (error) {  console.log("Error...", error); reject(error);  }          
-//           resolve(rows);              
-//         });
-//           connection.release();
-//           console.log('Process Complete %d', connection.threadId);
-//       });
-//     });
-//   } 
-
-//   AppModel.prototype.getPartnersList = function () {
-//     return new Promise(function (resolve, reject) {
-//       connection.getConnection(function (error, connection) {
-//         if (error) {
-//           throw error;
-//         }
-  
-//         connection.changeUser({database : dbName});
-//         connection.query('SELECT * FROM website_content WHERE type = \'partners\'', function (error, rows, fields) { 
-//           if (error) {  console.log("Error...", error); reject(error);  }          
-//           resolve(rows);              
-//         });
-//           connection.release();
-//           console.log('Process Complete %d', connection.threadId);
-//       });
-//     });
-//   } 
-
-// AppModel.prototype.getPortfolioList = function () {
-//     return new Promise(function (resolve, reject) {
-//       connection.getConnection(function (error, connection) {
-//         if (error) {
-//           throw error;
-//         }
-  
-//         connection.changeUser({database : dbName});
-//         connection.query('SELECT * FROM website_content WHERE type = \'portfolio\'', function (error, rows, fields) { 
-//           if (error) {  console.log("Error...", error); reject(error);  }          
-//           resolve(rows);              
-//         });
-//           connection.release();
-//           console.log('Process Complete %d', connection.threadId);
-//       });
-//     });
-//   } 
 
 module.exports = AppModel;

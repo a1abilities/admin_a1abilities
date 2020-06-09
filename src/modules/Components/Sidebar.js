@@ -22,30 +22,26 @@ export default function Sidebar(){
                     <a href="/"> <i className="fa fa-home" /> Dashboard </a>
                 </li>
                 <li>
-                    <a href="/Services"> <i className="fa fa-th-large" /> Events </a>
+                    <a href="/Events"> <i className="fa fa-th-large" /> Events </a>
                 </li>
             <li>
-                <a href="/OurTechnology">
+                <a href="/Miracles">
                 <i className="fa fa-area-chart" /> Miracles
                 </a>
             </li>
            
             <li>
-                <a href="/OurGoals">
+                <a href="/Directions">
                 <i className="fa fa-pencil-square-o" />Direction's </a>
             </li>
             <li>
-                <a href="/Portfolio">
+                <a href="/OBEs">
                 <i className="fa fa-desktop" /> OBE'S
                 </a>
             </li>
-            {/* <li>
-                <a href="/WhyUs">
-                <i className="fa fa-bell" /> Why Us 
-                </a>
-            </li>         */}
+           
             <li>
-               <a href="/OurPartners">
+               <a href="/Prayers">
                 <i className="fa fa-flask" /> Prayer's
                  </a>
              </li>

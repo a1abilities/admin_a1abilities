@@ -1,5 +1,5 @@
 const AppModel = require('../models/AppModels.js');
-
+const {uploadDocument} = require('../utils/uploadDocument.js');
 
 const addUpdateFormContent = async function (req, res, next) {
     const data = JSON.parse(req.body.data);
@@ -64,6 +64,50 @@ const addUpdateFormContent = async function (req, res, next) {
     }
   };
   
+
+  
+
+
+const getPrevBannerImage = async function (req, res, next) {
+    try {
+        const result = await new AppModel({}).getPrevBannerImage();
+        res.send( result );
+    } catch (err) {
+        next(err);
+    }
+}
+  
+const updateBannerProduct = async function (req, res, next) {
+    console.log(req.body);
+    const params = {
+        imageId : req.body.imageId,
+        picType : req.body.picType,
+        documentName : '',
+    };
+    try {
+        const newActivity = new AppModel(params);
+        // const defineModal = new Categories(params);
+
+        if(params.picType === 1 && params.document !== ""){
+            const base64Data = req.body.document.data.split(';base64,').pop();
+            let name = req.body.document.name.split('.')[0] + "_" + Date.now() + '.' + req.body.document.name.split('.')[1];
+        
+            await uploadDocument(`./files/images/${name}`, base64Data).catch(error => {
+                console.error(error);
+                throw (error);
+            });
+            newActivity.documentName = name;
+            await newActivity.uploadProductImage();
+        }else if(params.picType === 2 && params.imageId !== 0){
+            await newActivity.changeProductImage();
+        }
+    
+        res.send();
+    } catch (err) {
+        next(err);
+    }
+}
+
 
 const login = async function (req, res, next) {
     const params = {
@@ -205,6 +249,8 @@ module.exports = {
     getContactList:getContactList,
     login: login,
     changeState: changeState,
+    updateBannerProduct: updateBannerProduct,
+    getPrevBannerImage : getPrevBannerImage,
 
     // getServicesList: getServicesList,
     // getWhyusList: getWhyusList,

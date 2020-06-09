@@ -7,9 +7,9 @@ const path = require('path');
 const app = express();
 
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
+app.use(bodyParser.json({ limit: '50mb', extend: true }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true}));
+
 
 const { env } = require("./lib/databaseMySQL");
 const mainRoute = require('./routes/mainRoute');
@@ -22,6 +22,28 @@ if (env === 'dev' || env === 'uat' || env === 'prod') {
     app.use('/', express.static(path.join(__dirname, '..', 'src')));
     app.use('/src', express.static(path.join(__dirname, '..', 'src')));
 }
+
+
+
+
+app.use('/api/images', function (req, res, next) {
+    try {
+      const fileName = (req.query.path).toString().split('/').pop();
+  console.log(req.query.path, fileName);
+      let file = '';
+  
+      if(fileName === 'null'){
+          file = `${__dirname}/files/fileNotAvailabe.jpg`;
+      }else{
+          file = `${__dirname}/files/${req.query.path}`;
+      }
+  
+      res.download(file); // Set disposition and send it.
+    } catch (error) {
+      next(error);
+    }
+  });
+  
 
 app.use('/api',require('./routes/appRouting.js'));
 app.use('/',mainRoute);

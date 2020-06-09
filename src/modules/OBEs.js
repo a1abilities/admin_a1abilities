@@ -10,20 +10,20 @@ import { Link } from 'react-router-dom';
 // import api
 import FetchAPI from '../api/APIs.js';
 
-export default function Technology(props){
-  const [technologyList, setTechnologyList] = useState([]);
+export default function OBEs(props){
+  const [OBEsList, setOBEsList] = useState([]);
   
-  const fetchTechnology = async () => {
-    try{       
-      const result = await FetchAPI.getTabRelatedList({type: 'technology'});      
-      setTechnologyList(result.resultList);     
+  const fetchOBEs = async () => {
+    try{ 
+      const result = await FetchAPI.getTabRelatedList({type: 'OBE s'});
+      setOBEsList(result.resultList);     
     }catch(e){
       console.log('Error...',e);
     }
   }
 
   useEffect(() => {
-   fetchTechnology();
+   fetchOBEs();
   },[]);
 
   const handleUpdate = async (data) => {
@@ -33,8 +33,8 @@ export default function Technology(props){
   const handleActiveDeactive = async (data) => {
     console.log('handleActiveDeactive',data)
     try{    
-      const result = await FetchAPI.changeState({type: 'technology', id: data.id, is_active: data.is_active});
-      setTechnologyList(result.resultList);
+      const result = await FetchAPI.changeState({type: 'OBEs', id: data.id, is_active: data.is_active});
+      setOBEsList(result.resultList);
       // console.log('result',result)
     }catch(e){
       console.log('Error...',e);
@@ -49,8 +49,8 @@ export default function Technology(props){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title"> Miracles
-           <Link to= {{pathname:"/editor", state : {type:'technology', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                      <h1 className="title"> OBE'S
+                      <Link to= {{pathname:"/editor", state : {type:'OBEs', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
                       </h1>
                       <p className="title-description"></p>
                     </div>
@@ -68,20 +68,18 @@ export default function Technology(props){
                                     <thead>
                                       <tr>
                                         <th>S No.</th>
-                                        <th>Miracles </th>
-                                        <th>Update</th>
-                                        <th>Delete</th>
+                                        <th>OBE'S </th>
+                                        <th> Update</th>
+                                        <th>  Delete</th>
                                       </tr>
                                     </thead>
                                     <tbody>
-                                    {technologyList.map((data, index) => {
+                                    {OBEsList.map((data, index) => {
                                           return(
                                             <tr>
                                               <td>{index+1}</td>
                                               <td>{data.title}</td>
-                                              
-                                              <td><Link to= {{pathname:"/editor", state : {type:'technology', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
-
+                                              <td><Link to= {{pathname:"/editor", state : {type:'OBEs', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
                                               <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
                                             </tr>    
                                           )                               

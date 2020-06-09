@@ -11,7 +11,22 @@ const PARAMS = ({ methodType = 'GET' }) => ({
 
 export default {
 
-  
+  updateBannerProduct:async ({...payload }) => {
+
+    const URL = `${c.API_CONSUMER}/api/updateBannerProduct`;
+    try {
+      const { data } = await axios(URL, Object.assign({}, PARAMS({ methodType: 'POST' }), {
+        data: payload,
+      }),
+    );
+      return data;
+    } catch (error) {
+      checkError(error);
+      throw error;
+    }
+  },
+
+
   login:async ({...payload }) => {
 
     const URL = `${c.API_CONSUMER}/api/login`;
@@ -55,6 +70,22 @@ export default {
     }
   },
 
+
+  getPrevBannerImage:async ({...payload }) => {
+    const URL = `${c.API_CONSUMER}/api/getPrevBannerImage`;
+    try {
+      const { data } = await axios(URL, Object.assign({}, PARAMS({ methodType: 'GET' }), {
+        data: payload,
+      }),
+    );
+      return data;
+    } catch (error) {
+      checkError(error);
+      throw error;
+    }
+  },
+
+  
   getContactList:async ({...payload }) => {
     const URL = `${c.API_CONSUMER}/api/getContactList`;
     try {

@@ -1,31 +1,133 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Component } from 'react';
+
+
+// import Components
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
 import FetchAPI from '../api/APIs.js';
+import { API_URL } from '../api/config/Constants.js';
+import FileReaders from  '../utils/fileReader.js'
 
-export default class Home extends Component {
-    render(){
 
+export default function Home() {
+    const [preImages, setPreImages] = useState([]);
+    const [currImage, setCurrImage] = useState('');
+    const [picType, setPicType] = useState(0); // 0 = no change, 1 = new upload, 2 = select from prev    
+    
 
-  const handleSubmit = async () => {
-   
-        let formData = new FormData();
-        formData.append('data', JSON.stringify());
-        formData.append('images', document.getElementById('upload_image').files[0]);
-        const response = await FetchAPI.addUpdateFormContent({ formData: formData });
-       
-  }
-  const selectImage = (e) => {    
-    if(document.getElementById('upload_image').files && document.getElementById('upload_image').files[0]){
-      let reader = new FileReader();
-      reader.onload = (e) => {
-        document.getElementById('imagePreview').style.backgroundImage = 'url(' + e.target.result + ')';
-      };
-      reader.readAsDataURL(document.getElementById('upload_image').files[0]);
-      document.getElementById('closeFrame').click();
+    useEffect(() => {
+      getPrevBannerImage();
+    },[]);
+
+    const getPrevBannerImage = async ()=> {
+      try{
+        const result = await FetchAPI.getPrevBannerImage({});
+        setPreImages(result);
+      }catch(e){
+        console.log('Error...', e);
+      }
     }
-  } 
+  //   const getSingleProductData = async () => {
+  //     setIsLoading(true);
+  //     try{
+  //         const result = await CategoriesAPI.getSingleProductData({productId: props.location.state.productId});
+  //         setProduct(result.productData[0]);
+  //         setUnitList(result.units);
+  //         setPreImages(result.images);
+  //         ((result.images !== undefined && result.images.length > 0) ? result.images : []).map(data => {
+  //             if(data.type === 1 && data.is_active === 1){
+  //                 setCurrImage(data);
+  //             }
+  //         })
+  //     }catch(e){
+  //         console.log('Error...',e);
+  //     }
+  //     setIsLoading(false);
+  // }
+
+  const handleFileChange = (e) => {
+      if (window.File && window.FileList && window.FileReader) {
+          let file = e.target.files[0];
+          if(file !== null && file !== undefined && file !== ""){
+              let fileReader = new FileReader();
+              fileReader.onload = (e) => {
+                  document.getElementById("bannerImageThumb").setAttribute('src',e.target.result);
+                  document.getElementById("bannerImageThumb").setAttribute('title', "Selected image");
+              }
+              fileReader.readAsDataURL(file);
+              setPicType(1);
+          }
+      } else {
+          alert("Your browser doesn't support to File API")
+      }
+  }
+
+  const handleFileRemove = (e) => {
+      document.getElementById("bannerImageThumb").removeAttribute('src');
+      document.getElementById("bannerImageThumb").removeAttribute('title');
+      document.getElementById("bannerImage").value = '';
+      setPicType(0);
+  }
+
+  const handleSetPrevImage = (e) => {
+      let imageId = (e.target.name).split('-')[1];
+      (preImages.length > 0 ? preImages : []).map(data => {
+          if(data.id == imageId){
+              setCurrImage(data);
+              setPicType(2);
+          }
+      })
+  }
+
+
+  const updateBannerProduct = async (e) => {
+    e.preventDefault();
+    try{            
+        // setIsLoading(true);
+        // setShowAlert(false);
+        let doc = '';
+        let imageId = 0;
+        if(picType === 1){
+            doc = await FileReaders.toBase64(document.getElementById('bannerImage').files[0]);
+        }else if(picType === 2){
+            imageId = currImage.id;
+        }
+        const result = await FetchAPI.updateBannerProduct({
+            picType : picType,
+            imageId : imageId,
+            document : doc,
+        });
+        // setIsLoading(false);
+        // if(result === true){
+        //     setAlertParams({...alertParams, ['message'] : 'Product updated successfully'});
+        //     setShowAlert(true);
+        // }
+        // getSingleProductData();
+    }catch(e){
+        console.log('Error...', e);
+    }
+}
+
+
+  // const handleSubmit = async () => {
+   
+  //       let formData = new FormData();
+  //       formData.append('data', JSON.stringify());
+  //       formData.append('images', document.getElementById('upload_image').files[0]);
+  //       const response = await FetchAPI.addUpdateFormContent({ formData: formData });
+       
+  // }
+  // const selectImage = (e) => {    
+  //   if(document.getElementById('upload_image').files && document.getElementById('upload_image').files[0]){
+  //     let reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       document.getElementById('imagePreview').style.backgroundImage = 'url(' + e.target.result + ')';
+  //     };
+  //     reader.readAsDataURL(document.getElementById('upload_image').files[0]);
+  //     document.getElementById('closeFrame').click();
+  //   }
+  // } 
         return (
           <div>
                  <Header />
@@ -35,76 +137,55 @@ export default class Home extends Component {
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                        <h1 className="title"> Banner Image
-                     
-                     
-                      </h1>
-                   <p className="title-description"></p>
+                        <h1 className="title"> Banner Image </h1>
+                        <p className="title-description"></p>
                     </div>
-
-                    <div className="form-group row">
-                        <label className="col-sm-2 form-control-label text-xs-right"> Images: </label>
-                        <div className="col-sm-10">
-                          <div className="images-container">
-                            <div className="image-container">                              
-                              <div id = "imagePreview" className="image" style={{backgroundImage: ``}} />  
-                              {/* <a href={API_URL + "/api/download?path=customer/" + inputs.id_proof }  download >{inputs.id_proof}</a> */}
-                              <img src=''/>
-                            </div>                           
-                            <a href="#" className="add-image" data-toggle="modal" data-target="#modal-media">
-                              <div className="image-container new">
-                                <div className="image">
-                                  <i className="fa fa-plus" />
-                                </div>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
+                      {/* <div className="form-group row">
+                        <label className="col-sm-12 form-control-label text-xs-right"> Choose a New Image: </label>
+                        <input type="file" name ="bannerImage" id="bannerImage" />
                       </div>
                       <div className="form-group row">
                         <div className="col-sm-10 col-sm-offset-2">
                           <button type="button"  className="btn btn-primary" onClick={handleSubmit}>   Submit </button>
                         </div>
-                      </div>
-                    
-                </article>
-                <div className="modal fade" id="modal-media">
-                  <div className="modal-dialog modal-lg">
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <h4 className="modal-title">Choose Image</h4>
-                        <button type="button" id="closeFrame" className="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">×</span>
-                          <span className="sr-only">Close</span>
-                        </button>
-                      </div>
-                      <div className="modal-body modal-tab-container">
-                        <ul className="nav nav-tabs modal-tabs" role="tablist">
-                          <li className="nav-item">
-                            <a className="nav-link active" href="#upload" data-toggle="tab" role="tab">Upload</a>
-                          </li>
-                        </ul>
-                        <div className="tab-content modal-tab-content">                       
-                            <div className="upload-container">
-                              <div id="dropzone">
-                              <form className="dropzone needsclick dz-clickable" id="demo-upload">
-                                  <div className="dz-message-block">
-                                    <div className="dz-message ">
-                                      <input accept="image/gif, image/jpeg, image/png, image/jpg"  style ={{display: 'none'}} id="upload_image" type="file" onChange ={(e) => {selectImage(e)}} />
-                                        <label htmlFor="upload_image">
-                                          Click to upload.
-                                        </label>
-                                    </div>
+
+                      </div> */}
+                      <form onSubmit={updateBannerProduct} class="p-5 bg-light b-top-dark">
+                       <div className="form-group row">
+                          <div class="col-md-12">
+                              <div class="form-group">
+                                  <label for="form-control-label text-xs-right">Previous Images *</label>
+                                  <div className="w-100">
+                                      {(preImages.length > 0 ? preImages : []).map(data => {
+                                          return(
+                                              <span>
+                                                  <img class="imageBox" name={"prevImage-" + data.id} src={API_URL + "/api/images?path=images/" + data.image_name} onClick={handleSetPrevImage} />
+                                              </span>
+                                          )
+                                      })}
                                   </div>
-                                </form>
                               </div>
-                            </div>
+                          </div>                                       
+                          <div class="col-md-12">
+                              <div class="form-group">
+                                  <div class="field" align="left">
+                                      <label for="bannerImage">Click to upload new image for product *</label>
+                                      <input type="file" class="form-control" id="bannerImage" name="bannerImage" accept=".png, .jpg, .jpeg" onChange={handleFileChange}  required={preImages.length === 0} />                                       
+                                  </div>
+                              </div>
+                              <span>
+                                  <img class="imageThumb" id="bannerImageThumb" src={ API_URL + "/api/images?path=images/" + currImage.image_name} />
+                                  <br/>
+                                  <span class="remove" onClick={handleFileRemove}>Remove image</span>
+                              </span>
+                          </div>                                        
+                          <div class="form-group p-4">
+                              <input type="submit" value="Update" class="btn  px-4 btn-primary" />
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                      </form>
+                    </article>
+                
                 </div>
           )
-    }
 }
