@@ -176,10 +176,13 @@ export default function Home() {
                               <span>
                                   <img class="imageThumb" id="bannerImageThumb" src={ API_URL + "/api/images?path=images/" + currImage.image_name} />
                                   <br/>
-                                  <span class="remove" onClick={handleFileRemove}>Remove image</span>
+                                  {/* <button type="button" className="btn btn-success-outline"onClick={handleFileRemove}>Remove Image</button> */}
+                                  {/* <span class="remove" >Remove image</span> */}
                               </span>
                           </div>                                        
                           <div class="form-group p-4">
+                          <button type="button" className="btn btn-success-outline"onClick={handleFileRemove}>Remove Image</button>
+                          &ensp;
                               <input type="submit" value="Update" class="btn  px-4 btn-primary" />
                           </div>
                         </div>
