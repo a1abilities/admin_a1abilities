@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Component } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
-
-
 import { Link } from 'react-router-dom';
-
 
 // import api
 import FetchAPI from '../api/APIs.js';
@@ -51,6 +48,8 @@ export default function Prayers(props){
                     <div className="title-block">
                       <h1 className="title"> Prayers
                       <Link to= {{pathname:"/editor", state : {type:'Prayers', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                      
+                      <Link to= {{pathname:"/images", state : {type:'Prayers', operation: 'add'}}}><button type="button" style={{float: 'right',marginRight:"20px" }}className="btn btn-success-outline">Banner Image</button></Link>
                       </h1>
                       <p className="title-description"></p>
                     </div>

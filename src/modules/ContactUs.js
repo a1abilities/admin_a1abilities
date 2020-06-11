@@ -46,6 +46,7 @@ export default function Contact(props){
           <div>
                  <Header {...props}/>
                  <Sidebar />
+                
                   <div className="sidebar-overlay" id="sidebar-overlay" />
                   <div className="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle" />
                   <div className="mobile-menu-handle" />
@@ -53,6 +54,7 @@ export default function Contact(props){
                     <div className="title-block">
                       <h1 className="title"> Contact US  
                         <Link to= {{pathname:"/editor", state : {type:'contact', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                        <Link to= {{pathname:"/images", state : {type:'contact', operation: 'add'}}}><button type="button" style={{float: 'right' ,marginRight:"20px"}}className="btn btn-success-outline">Banner Image</button></Link>
                       </h1>
                       <p className="title-description"></p>
                     </div>

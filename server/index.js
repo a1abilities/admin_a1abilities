@@ -51,7 +51,7 @@ app.use('/',mainRoute);
 let port ='';
 
 if(env === 'local'){
-    port = 5000;
+    port = 5001;
 }else if(env === 'prod'){
     port = 3007;
 }

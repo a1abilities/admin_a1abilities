@@ -24,6 +24,8 @@ const OBEs = lazy(()=> import('./modules/OBEs'));
 const Miracles = lazy(()=> import('./modules/Miracles'));
 const Prayers = lazy(()=> import('./modules/Prayers'));
 
+const Images = lazy(()=> import('./modules/Components/images'));
+
 
 function App() {
  
@@ -58,6 +60,8 @@ function App() {
                 <Route exact path="/Miracles" render={props => { return APP_TOKEN.notEmpty ? <Miracles {...props}/>  :  <Redirect to="/login" />  }} />
                  <Route exact path="/home" render={props => { return APP_TOKEN.notEmpty ? <Index {...props}/> :  <Redirect to="/login" /> }} />
                 <Route exact path="/editor"  render={props => { return APP_TOKEN.notEmpty ? <Editor {...props}  />  :  <Redirect to="/login" />  }}  />
+                <Route exact path="/images"  render={props => { return APP_TOKEN.notEmpty ? <Images {...props}  />  :  <Redirect to="/login" />  }}  />
+
                 <Route exact path="/Contact" render={props => { return APP_TOKEN.notEmpty ? <Contact {...props} />  :  <Redirect to="/login" />  }} />
                 <Route exact path="/About" render={props => { return APP_TOKEN.notEmpty ? <About  {...props}/>  :  <Redirect to="/login" />  }} />
                 <Route exact path="/login" render={props => { return APP_TOKEN.notEmpty ? <Redirect to="/home" /> :  <Login {...props} /> }}  />     

@@ -1,7 +1,7 @@
 export default {
   'config-development': {
-    API_URL : 'http://localhost:5000',
-    AUTH_URL : 'http://localhost:5000',
+    API_URL : 'http://localhost:5001',
+    AUTH_URL : 'http://localhost:5001',
   },
   'config-dev': {
     API_URL: '',

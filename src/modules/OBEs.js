@@ -15,7 +15,7 @@ export default function OBEs(props){
   
   const fetchOBEs = async () => {
     try{ 
-      const result = await FetchAPI.getTabRelatedList({type: 'OBE s'});
+      const result = await FetchAPI.getTabRelatedList({type: 'OBEs'});
       setOBEsList(result.resultList);     
     }catch(e){
       console.log('Error...',e);
@@ -50,7 +50,9 @@ export default function OBEs(props){
                   <article className="content responsive-tables-page">
                     <div className="title-block">
                       <h1 className="title"> OBE'S
+                     
                       <Link to= {{pathname:"/editor", state : {type:'OBEs', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                      <Link to= {{pathname:"/images", state : {type:'OBEs', operation: 'add'}}}><button type="button" style={{float: 'right',marginRight:"20px" }}className="btn btn-success-outline">Banner Image</button></Link>
                       </h1>
                       <p className="title-description"></p>
                     </div>

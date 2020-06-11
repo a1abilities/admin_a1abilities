@@ -51,6 +51,7 @@ export default function Miracles(props){
                     <div className="title-block">
                       <h1 className="title"> Miracles
            <Link to= {{pathname:"/editor", state : {type:'Miracles', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+           <Link to= {{pathname:"/images", state : {type:'Miracles', operation: 'add'}}}><button type="button" style={{float: 'right'  ,marginRight:"20px"}}className="btn btn-success-outline">Banner Image</button></Link>
                       </h1>
                       <p className="title-description"></p>
                     </div>

@@ -22,6 +22,7 @@ const AppModel = function (params) {
   this.imageId = params.imageId;
   this.picType = params.picType;
   this.documentName = params.documentName;
+  this.module_id = params.module_id;
 };
 
 
@@ -206,10 +207,10 @@ AppModel.prototype.getTabRelatedList = function () {
       if (error) {
         throw error;
       }
+      
       connection.changeUser({database : dbName});
-      connection.query('SELECT wc.*,i.type, i.image_name, l.website_link as link FROM website_content as wc LEFT JOIN images as i ON wc.image_id = i.id LEFT JOIN links as l ON l.id = wc.link_id WHERE i.type = "' +that.type+ '"', function (error, rows, fields) { 
-        if (error) {  console.log("Error...", error); reject(error);  }   
-              
+      connection.query('SELECT wc.*,i.type, i.image_name, l.website_link as link FROM website_content as wc LEFT JOIN images as i ON wc.image_id = i.id LEFT JOIN links as l ON l.id = wc.link_id WHERE wc.type = "' +that.type+ '"', function (error, rows, fields) { 
+        if (error) { console.log("Error...", error); reject(error);  }   
         resolve(rows);              
       });
         connection.release();

@@ -50,9 +50,10 @@ export default function AboutGC(props){
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                      <h1 className="title">About GC
-          <Link to= {{pathname:"/editor", state : {type:'AboutGC', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
-                      </h1>
+                      <h1 className="title">Home About GC
+                      <Link to= {{pathname:"/editor", state : {type:'AboutGC', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                      <Link to= {{pathname:"/video", state : {type:'Events', operation: 'add'}}}><button type="button" style={{float: 'right',marginRight:"20px" }}className="btn btn-success-outline">Home  About Video</button></Link>
+                        </h1>
                       <p className="title-description"></p>
                     </div>
                     <section className="section">

@@ -47,9 +47,8 @@ export default function Events(props){
                   <article className="content responsive-tables-page">
                     <div className="title-block">
                       <h1 className="title"> Events
-                     
-
-                      <Link to= {{pathname:"/editor", state : {type:'Events', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                       <Link to= {{pathname:"/editor", state : {type:'Events', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+                       <Link to= {{pathname:"/images", state : {type:'Events', operation: 'add'}}}><button type="button" style={{float: 'right',marginRight:"20px" }}className="btn btn-success-outline">Banner Image</button></Link>
                       </h1>
                       <p className="title-description"></p>
                       

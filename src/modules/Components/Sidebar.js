@@ -57,7 +57,7 @@ export default function Sidebar(){
                                     </a>
                                     <ul class="sidebar-nav">
                                         <li>
-                                            <a href="/Aboutgc"> About GC </a>
+                                            <a href="/Aboutgc"> Home About GC </a>
                                         </li>
                                         <li>
                                             <a href="/Introduction"> Introduction </a>

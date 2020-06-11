@@ -1,16 +1,45 @@
 import React, {useState, useEffect} from 'react';
-import { Component } from 'react';
-
 
 // import Components
-import Header from './Components/Header.js';
-import Sidebar from './Components/Sidebar.js';
-import FetchAPI from '../api/APIs.js';
-import { API_URL } from '../api/config/Constants.js';
-import FileReaders from  '../utils/fileReader.js'
+import Header from './Header';
+import Sidebar from './Sidebar.js';
+import FetchAPI from '../../api/APIs';
+import { API_URL } from '../../api/config/Constants.js';
+
+import FileReaders from  '../../utils/fileReader'
 
 
-export default function Home() {
+
+export default function Image(mainProps) {
+  
+    const props = mainProps.location.state;
+    const type = props.type;
+     const operation = props.operation;
+
+console.log(props)
+
+
+let pathLink = '';
+let titleText = '';
+switch(type){
+
+  case 'Events'        :   titleText = 'Events'        ; pathLink = '/Events';  break;
+  case 'Directions'    :   titleText = 'Directions'    ; pathLink = '/Directions'; break;
+  case 'DimpleAnil'    :   titleText = 'DimpleAnil'    ; pathLink = '/DimpleAnil'; break;
+  case 'AboutGC'       :   titleText = 'AboutGC'       ; pathLink = '/AboutGC'; break;
+  case 'Introduction'  :   titleText = 'Introduction'  ; pathLink = '/Introduction'; break;
+  case 'OBEs'          :   titleText = 'OBEs'          ; pathLink = '/OBEs'; break;
+  case 'about'         :   titleText = 'About us'      ; pathLink = '/About'; break;
+  case 'contact'       :   titleText = 'Contact'       ; pathLink = '/Contact'; break;
+  case 'Miracles'      :   titleText = ' Miracles'     ; pathLink = '/Miracles'; break;
+  case 'Prayers'       :   titleText = ' Prayers'      ; pathLink = '/Prayers'; break;
+}
+
+  
+  
+  
+  
+  
     const [preImages, setPreImages] = useState([]);
     const [currImage, setCurrImage] = useState('');
     const [picType, setPicType] = useState(0); // 0 = no change, 1 = new upload, 2 = select from prev    
@@ -132,13 +161,29 @@ export default function Home() {
           <div>
                  <Header />
                  <Sidebar />
+
+                 
+                  
+
                   <div className="sidebar-overlay" id="sidebar-overlay" />
                   <div className="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle" />
                   <div className="mobile-menu-handle" />
                   <article className="content responsive-tables-page">
                     <div className="title-block">
-                        <h1 className="title"> Banner Image Home Page</h1>
+                        <h1 className="title"> Banner Image </h1>
                         <p className="title-description"></p>
+
+                        <h3 className="title"> 
+                    {titleText}
+                   <a href= {pathLink} >
+                    <button type="button"  className="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">×</span>
+                          <span className="sr-only">Close</span>
+                            </button>
+                    </a>
+                                                       
+                    <span className="sparkline bar" data-type="bar" />
+                    </h3>
                     </div>
                       {/* <div className="form-group row">
                         <label className="col-sm-12 form-control-label text-xs-right"> Choose a New Image: </label>
@@ -187,8 +232,10 @@ export default function Home() {
                           </div>
                         </div>
                       </form>
-                    </article>
                 
+                    </article>
+                   
+               
                 </div>
           )
 }

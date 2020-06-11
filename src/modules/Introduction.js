@@ -52,6 +52,7 @@ export default function Introduction(props){
                     <div className="title-block">
                       <h1 className="title">Introduction
           <Link to= {{pathname:"/editor", state : {type:'Introduction', operation: 'add'}}}><button type="button" style={{float: 'right' }}className="btn btn-success-outline">Add</button></Link>
+          <Link to= {{pathname:"/images", state : {type:'Events', operation: 'add'}}}><button type="button" style={{float: 'right',marginRight:"20px" }}className="btn btn-success-outline">Banner Image</button></Link>
                       </h1>
                       <p className="title-description"></p>
                     </div>
