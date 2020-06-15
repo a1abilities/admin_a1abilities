@@ -16,6 +16,7 @@ const addUpdateFormContent = async function (req, res, next) {
         image_id: data.image_id,
         link_id: data.link_id,  
         image_name: attachment,
+        date: data.date,
         link: data.link,
         new_image_id: '',
         new_link_id: '',   
@@ -70,24 +71,24 @@ const addUpdateFormContent = async function (req, res, next) {
 
 const getPrevBannerImage = async function (req, res, next) {
     try {
-        const result = await new AppModel({}).getPrevBannerImage();
+        const result = await new AppModel({type: req.body.type}).getPrevBannerImage();        
         res.send( result );
     } catch (err) {
         next(err);
     }
 }
   
-const updateBannerProduct = async function (req, res, next) {
-    console.log(req.body);
+const updateBannerProduct = async function (req, res, next) {    
     const params = {
         imageId : req.body.imageId,
         picType : req.body.picType,
+        type : req.body.type,
         documentName : '',
     };
+    console.log(params)
     try {
         const newActivity = new AppModel(params);
-        // const defineModal = new Categories(params);
-
+        
         if(params.picType === 1 && params.document !== ""){
             const base64Data = req.body.document.data.split(';base64,').pop();
             let name = req.body.document.name.split('.')[0] + "_" + Date.now() + '.' + req.body.document.name.split('.')[1];
@@ -137,9 +138,7 @@ const getContactList = async function (req, res, next) {
 
 const getTabRelatedList = async function (req, res, next) {
     try {
-        // console.log(req.body)
         const result = await new AppModel({type: req.body.type}).getTabRelatedList();
-        console.log(result)
         res.send({ resultList: result });
     } catch (err) {
         next(err);

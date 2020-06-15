@@ -23,6 +23,7 @@ const AppModel = function (params) {
   this.picType = params.picType;
   this.documentName = params.documentName;
   this.module_id = params.module_id;
+  this.date=params.date;
 };
 
 
@@ -34,8 +35,8 @@ AppModel.prototype.uploadImage = function () {
       throw error;
     }
     connection.changeUser({database : dbName});  
-    let Values = [[that.image_name, 1]];    
-    connection.query('INSERT INTO images(image_name, is_active) VALUES ?',[Values], function (error, rows, fields) { 
+    let Values = [[that.type, that.image_name, 1]];    
+    connection.query('INSERT INTO images(type, image_name, is_active) VALUES ?',[Values], function (error, rows, fields) { 
       if (error) {  console.log("Error...", error); reject(error);  } 
       resolve(rows);              
     });
@@ -54,12 +55,13 @@ AppModel.prototype.uploadProductImage = function () {
         throw error;
       }
       connection.changeUser({database : dbName});
-      connection.query(`UPDATE images SET is_active = 0 WHERE type = 'bannerImage'`, function (error, rows, fields) {
+      connection.query(`UPDATE images SET is_active = 0 WHERE type = '${that.type}'`, function (error, rows, fields) {
         if (error) {  console.log("Error...", error); reject(error);  }
         
-        const VALUES = [0, "bannerImage", that.documentName, 1];
+        const VALUES = [0, that.type, that.documentName, 1];
         let Query = `INSERT INTO images(module_id, type, image_name, is_active) VALUES(?)`;
         connection.query(Query, [VALUES], function (error, rows, fields) {
+         
           if (error) {  console.log("Error...", error); reject(error);  }
           resolve(rows.insertId);
         });
@@ -83,7 +85,9 @@ AppModel.prototype.getPrevBannerImage = function () {
         throw error;
       }
       connection.changeUser({database : dbName});
-      connection.query(`SELECT * FROM images WHERE type = 'bannerImage'`, function (error, rows, fields) {
+      let Query = `SELECT * FROM images WHERE type = '${that.type}';`;
+      console.log(Query);
+      connection.query(Query, function (error, rows, fields) {
         if (error) {  console.log("Error...", error); reject(error);  }       
             resolve(rows);
         });
@@ -102,10 +106,10 @@ AppModel.prototype.changeProductImage = function () {
         throw error;
       }
       connection.changeUser({database : dbName});
-      connection.query(`UPDATE images SET is_active = 0 WHERE type = 'bannerImage'`, function (error, rows, fields) {
+      connection.query(`UPDATE images SET is_active = 0 WHERE type = '${that.type}'`, function (error, rows, fields) {
         if (error) {  console.log("Error...", error); reject(error);  }
        
-        connection.query(`UPDATE images SET is_active = 1 WHERE id = ${that.imageId}`, function (error, rows, fields) {
+        connection.query(`UPDATE images SET is_active = 1 WHERE id = ${that.imageId};`, function (error, rows, fields) {
           if (error) {  console.log("Error...", error); reject(error);  }
             resolve(rows.insertId);
         });
@@ -126,8 +130,8 @@ AppModel.prototype.insertLink = function () {
       throw error;
     }
     connection.changeUser({database : dbName});  
-    let Values = [[that.link, 1]];    
-    connection.query('INSERT INTO links(website_link, is_active) VALUES ?',[Values], function (error, rows, fields) { 
+    let Values = [[1,that.type,that.link, 1]];    
+    connection.query('INSERT INTO links(module_id,type,website_link, is_active) VALUES ?',[Values], function (error, rows, fields) { 
       if (error) {  console.log("Error...", error); reject(error);  } 
       resolve(rows);              
     });
@@ -144,9 +148,9 @@ AppModel.prototype.addFormContent = function () {
       if (error) {
         throw error;
       }
-      let Values = [[that.type, that.new_image_id, that.new_link_id, that.title, that.content, 1]];
+      let Values = [that.type, that.new_image_id, that.new_link_id, that.title, that.content, that.date, 1];
       connection.changeUser({database : dbName});      
-      connection.query('INSERT INTO website_content(type, image_id, link_id, title, content, is_active) VALUES ?',[Values], function (error, rows, fields) { 
+      connection.query('INSERT INTO website_content(type, image_id, link_id, title, content,date, is_active) VALUES ?',[Values], function (error, rows, fields) { 
         if (error) {  console.log("Error...", error); reject(error);  } 
         resolve(rows);              
       });
@@ -168,7 +172,7 @@ return new Promise(function (resolve, reject) {
    
 
     connection.changeUser({database : dbName});
-    connection.query('UPDATE website_content SET title = "'+that.title+'", image_id = "' + that.image_id + '", link_id = "' +that.link_id+ '", content = "'+that.content+'" WHERE id = "'+that.id+'"', function (error, rows, fields) { 
+    connection.query('UPDATE website_content SET title = "'+that.title+'", image_id = "' + that.image_id + '", link_id = "' +that.link_id+ '", content = "'+that.content+'", date = "'+that.date+'" WHERE id = "'+that.id+'"', function (error, rows, fields) { 
       if (error) {  console.log("Error...", error); reject(error);  }          
       resolve(rows);              
     });
@@ -209,7 +213,7 @@ AppModel.prototype.getTabRelatedList = function () {
       }
       
       connection.changeUser({database : dbName});
-      connection.query('SELECT wc.*,i.type, i.image_name, l.website_link as link FROM website_content as wc LEFT JOIN images as i ON wc.image_id = i.id LEFT JOIN links as l ON l.id = wc.link_id WHERE wc.type = "' +that.type+ '"', function (error, rows, fields) { 
+      connection.query('SELECT wc.*, i.image_name, l.website_link as link FROM website_content as wc LEFT JOIN images as i ON wc.image_id = i.id LEFT JOIN links as l ON l.id = wc.link_id WHERE wc.type = "' +that.type+ '"', function (error, rows, fields) { 
         if (error) { console.log("Error...", error); reject(error);  }   
         resolve(rows);              
       });

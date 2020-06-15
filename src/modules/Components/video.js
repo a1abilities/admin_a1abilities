@@ -1,98 +1,39 @@
-// import React,{useState, useEffect } from 'react'
-// import Dropzone from 'react-dropzone'
-// import { fireEvent, render } from 'react-testing-library'
-// import Header from './Header.js';
-// import Sidebar from './Sidebar.js';
+import React, { useEffect, useState } from 'react';
+import Header from './Components/Header.js';
+import Sidebar from './Components/Sidebar.js';
+import Video from './video_upload.js'
 
-
-
-// // import api
-// import FetchAPI from '../../api/APIs.js';
-
-// export default function Editor(mainProps) {
-// const props = mainProps.location.state;
-// const type = props.type;
-// const operation = props.operation;
-
-// console.log(props)
-
-// let pathLink = '';
-// let titleText = '';
-// switch(type){
-
-//   case 'Events'        :   titleText = 'Events'        ; pathLink = '/Events';  break;
-//   case 'Directions'    :   titleText = 'Directions'    ; pathLink = '/Directions'; break;
-//   case 'DimpleAnil'    :   titleText = 'DimpleAnil'    ; pathLink = '/DimpleAnil'; break;
-//   case 'AboutGC'       :   titleText = 'AboutGC'       ; pathLink = '/AboutGC'; break;
-//   case 'Introduction'  :   titleText = 'Introduction'  ; pathLink = '/Introduction'; break;
-//   case 'OBEs'          :   titleText = 'OBEs'          ; pathLink = '/OBEs'; break;
-//   case 'about'         :   titleText = 'About us'      ; pathLink = '/About'; break;
-//   case 'contact'       :   titleText = 'Contact'       ; pathLink = '/Contact'; break;
-//   case 'Miracles'      :   titleText = ' Miracles'     ; pathLink = '/Miracles'; break;
-//   case 'Prayers'       :   titleText = ' Prayers'      ; pathLink = '/Prayers'; break;
-// }
-
-
-
-
-
-// test('invoke onDragEnter when dragenter event occurs', async () => {
-//   const file = new File([
-//     JSON.stringify({ping: true})
-//   ], 'ping.json', { type: 'application/json' })
-//   const data = mockData([file])
-//   const onDragEnter = jest.fn()
+export default function Contact(props){
  
-//   const ui = (
-//     <Dropzone onDragEnter={onDragEnter}>
-//       {({ getRootProps, getInputProps }) => (
-//         <div {...getRootProps()}>
-//           <input {...getInputProps()} />
-//         </div>
-//       )}
-//     </Dropzone>
-//   )
-//   const { container } = render(ui)
-//   const dropzone = container.querySelector('div')
- 
-//   dispatchEvt(dropzone, 'dragenter', data)
-//   await flushPromises(ui, container)
- 
-//   expect(onDragEnter).toHaveBeenCalled()
-// })
- 
-// function flushPromises(ui, container) {
-//   return new Promise(resolve =>
-//     setImmediate(() => {
-//       render(ui, { container })
-//       resolve(container)
-//     })
-//   )
-// }
- 
-// function dispatchEvt(node, type, data) {
-//   const event = new Event(type, { bubbles: true })
-//   Object.assign(event, data)
-//   fireEvent(node, event)
-// }
- 
-// function mockData(files) {
-//   return {
-  
-     
- 
-//     dataTransfer: {
-//       files,
-//       items: files.map(file => ({
-//         kind: 'file',
-//         type: file.type,
-//         getAsFile: () => file
-//       })),
-//       types: ['Files']
 
-//     }
-  
-//   }
+        return (
+          <div>
+                 <Header {...props}/>
+                 <Sidebar />
+                 <div>
+  <div id="main-div">
+    <form encType="multipart/form-data" name="videoUpload" id="video-upload">
+      <div className="form-group">
+        <label className="custom-label"> Select file to upload: </label>
+        <input accept="video/mp4" name="user-file" type="file" />
+      </div>
+      <div className="form-group">
+        <label className="custom-label" style={{verticalAlign: 'top'}}> Video Details:</label>
+        <textarea rows={10} cols={80} name="details" defaultValue={""} />
+      </div>
+      <div style={{paddingLeft: '15%'}}>
+        <input id="submit" defaultValue="Upload File" onclick="onSubmit(event)" name="submit" type="submit" />
+      </div>
+    </form>
+  </div>
+  <div style={{paddingLeft: '15%'}} id="message">
+  </div>
+</div>
 
-// }
-// }
+                 
+
+
+                 
+                </div>
+          )    
+}

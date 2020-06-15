@@ -14,15 +14,13 @@ export default function Image(mainProps) {
   
     const props = mainProps.location.state;
     const type = props.type;
-     const operation = props.operation;
-
-console.log(props)
 
 
 let pathLink = '';
 let titleText = '';
 switch(type){
 
+  case 'Home'          :   titleText = 'Home'        ; pathLink = '/home';  break;
   case 'Events'        :   titleText = 'Events'        ; pathLink = '/Events';  break;
   case 'Directions'    :   titleText = 'Directions'    ; pathLink = '/Directions'; break;
   case 'DimpleAnil'    :   titleText = 'DimpleAnil'    ; pathLink = '/DimpleAnil'; break;
@@ -31,14 +29,12 @@ switch(type){
   case 'OBEs'          :   titleText = 'OBEs'          ; pathLink = '/OBEs'; break;
   case 'about'         :   titleText = 'About us'      ; pathLink = '/About'; break;
   case 'contact'       :   titleText = 'Contact'       ; pathLink = '/Contact'; break;
-  case 'Miracles'      :   titleText = ' Miracles'     ; pathLink = '/Miracles'; break;
-  case 'Prayers'       :   titleText = ' Prayers'      ; pathLink = '/Prayers'; break;
+  case 'Miracles'      :   titleText = 'Miracles'     ; pathLink = '/Miracles'; break;
+  case 'Prayers'       :   titleText = 'Prayers'      ; pathLink = '/Prayers'; break;
 }
 
   
-  
-  
-  
+    
   
     const [preImages, setPreImages] = useState([]);
     const [currImage, setCurrImage] = useState('');
@@ -51,29 +47,14 @@ switch(type){
 
     const getPrevBannerImage = async ()=> {
       try{
-        const result = await FetchAPI.getPrevBannerImage({});
+        const result = await FetchAPI.getPrevBannerImage({type: 'banner'+type});
         setPreImages(result);
+        console.log(result);
       }catch(e){
         console.log('Error...', e);
       }
     }
-  //   const getSingleProductData = async () => {
-  //     setIsLoading(true);
-  //     try{
-  //         const result = await CategoriesAPI.getSingleProductData({productId: props.location.state.productId});
-  //         setProduct(result.productData[0]);
-  //         setUnitList(result.units);
-  //         setPreImages(result.images);
-  //         ((result.images !== undefined && result.images.length > 0) ? result.images : []).map(data => {
-  //             if(data.type === 1 && data.is_active === 1){
-  //                 setCurrImage(data);
-  //             }
-  //         })
-  //     }catch(e){
-  //         console.log('Error...',e);
-  //     }
-  //     setIsLoading(false);
-  // }
+
 
   const handleFileChange = (e) => {
       if (window.File && window.FileList && window.FileReader) {
@@ -126,37 +107,15 @@ switch(type){
             picType : picType,
             imageId : imageId,
             document : doc,
+            type : 'banner'+type,
         });
-        // setIsLoading(false);
-        // if(result === true){
-        //     setAlertParams({...alertParams, ['message'] : 'Product updated successfully'});
-        //     setShowAlert(true);
-        // }
-        // getSingleProductData();
+   
     }catch(e){
         console.log('Error...', e);
     }
 }
 
 
-  // const handleSubmit = async () => {
-   
-  //       let formData = new FormData();
-  //       formData.append('data', JSON.stringify());
-  //       formData.append('images', document.getElementById('upload_image').files[0]);
-  //       const response = await FetchAPI.addUpdateFormContent({ formData: formData });
-       
-  // }
-  // const selectImage = (e) => {    
-  //   if(document.getElementById('upload_image').files && document.getElementById('upload_image').files[0]){
-  //     let reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       document.getElementById('imagePreview').style.backgroundImage = 'url(' + e.target.result + ')';
-  //     };
-  //     reader.readAsDataURL(document.getElementById('upload_image').files[0]);
-  //     document.getElementById('closeFrame').click();
-  //   }
-  // } 
         return (
           <div>
                  <Header />
@@ -185,16 +144,7 @@ switch(type){
                     <span className="sparkline bar" data-type="bar" />
                     </h3>
                     </div>
-                      {/* <div className="form-group row">
-                        <label className="col-sm-12 form-control-label text-xs-right"> Choose a New Image: </label>
-                        <input type="file" name ="bannerImage" id="bannerImage" />
-                      </div>
-                      <div className="form-group row">
-                        <div className="col-sm-10 col-sm-offset-2">
-                          <button type="button"  className="btn btn-primary" onClick={handleSubmit}>   Submit </button>
-                        </div>
-
-                      </div> */}
+                     
                       <form onSubmit={updateBannerProduct} class="p-5 bg-light b-top-dark">
                        <div className="form-group row">
                           <div class="col-md-12">
@@ -221,8 +171,7 @@ switch(type){
                               <span>
                                   <img class="imageThumb" id="bannerImageThumb" src={ API_URL + "/api/images?path=images/" + currImage.image_name} />
                                   <br/>
-                                  {/* <button type="button" className="btn btn-success-outline"onClick={handleFileRemove}>Remove Image</button> */}
-                                  {/* <span class="remove" >Remove image</span> */}
+                              
                               </span>
                           </div>                                        
                           <div class="form-group p-4">

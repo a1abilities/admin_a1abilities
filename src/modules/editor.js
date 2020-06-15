@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, Fragment } from 'react';
 import Header from './Components/Header.js';
 import Sidebar from './Components/Sidebar.js';
 
@@ -6,13 +6,15 @@ import Sidebar from './Components/Sidebar.js';
 
 // import api
 import FetchAPI from '../api/APIs.js';
+import { getDate } from '../common/datetime.js';
+
 
 export default function Editor(mainProps) {
   const props = mainProps.location.state;
   const type = props.type;
   const operation = props.operation;
-
- console.log(props)
+console.log(type)
+ 
 
   let pathLink = '';
   let titleText = '';
@@ -32,7 +34,16 @@ export default function Editor(mainProps) {
   
 
 
-  const [inputs, setInputs] = useState({name:'', content: '', link: '', address:'', email:'', mobile: ''});  
+  const [inputs, setInputs] = useState(
+    {
+    name:'', 
+    content: '', 
+    link: '', 
+    address:'', 
+    email:'',
+    mobile: '',
+    date:'',
+  });  
 
   const handleChange  = (props) => {
     setInputs({...inputs, [props.target.name]: props.target.value});
@@ -40,7 +51,7 @@ export default function Editor(mainProps) {
 
   useEffect(() => {
     if(Object.keys(props)[2] === 'data'){
-      setInputs({name: props.data.title, content: props.data.content, link: props.data.link, address: props.data.address , email: props.data.email, mobile: props.data.mobile  })
+      setInputs({name: props.data.title, content: props.data.content, link: props.data.link, address: props.data.address , email: props.data.email, mobile: props.data.mobile, date: props.data.date  })
     }
   },[])
 
@@ -84,7 +95,8 @@ export default function Editor(mainProps) {
               type: type,
               title: inputs.name,
               content: inputs.content,
-              link: inputs.link,
+              date: getDate(inputs.date),
+              link: inputs.link,              
             }
         if(operation === 'update'){
           data.id = props.data.id;
@@ -108,6 +120,7 @@ export default function Editor(mainProps) {
     }else{
       alert('Need all fields')
     }
+
   }
 
         return (
@@ -121,12 +134,9 @@ export default function Editor(mainProps) {
                 <div className="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle" />
                 <div className="mobile-menu-handle" />
                 <article className="content item-editor-page">
-                  <div className="title-block">
-                    
+                  <div className="title-block">                    
                     <h3 className="title"> 
                     {titleText}
-
-
                     <a href= {pathLink} >
                     <button type="button"  className="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">×</span>
@@ -141,7 +151,8 @@ export default function Editor(mainProps) {
                   </div>
                   <form name="item">
                     <div className="card card-block">
-                      {type === 'contact' ? <div>
+                      {type === 'contact' ?
+                      <div>
                       <div className="form-group row">
                         <label className="col-sm-2 form-control-label text-xs-right" > Address: </label>
                         <div className="col-sm-10">
@@ -167,7 +178,7 @@ export default function Editor(mainProps) {
                       </div>
                       </div>
                       :
-<div>
+                      <div>
                       <div className="form-group row">
                         <label className="col-sm-2 form-control-label text-xs-right" > Name: </label>
                         <div className="col-sm-10">
@@ -180,16 +191,26 @@ export default function Editor(mainProps) {
                           <textarea className="form-control boxed " rows="8" type="text" value = {inputs.content} name="content" onChange={handleChange } />
                         </div>
                       </div> 
-                      <div className="form-group row">
+                        {(type === 'Events' || type === 'Prayers' ) &&
+                          <div className="form-group row">
+                            <label className="col-sm-2 form-control-label text-xs-right"> Date: </label>
+                            <div className="col-sm-10">
+                              <input className="form-control boxed" placeholder value = {inputs.date}  placeholder ="DD/MM/YYYY" type="date" value = {inputs.date} name="date" onChange={handleChange } />
+                            </div>
+                          </div>
+                        }
+                      <div className="form-group row">                        
                         <label className="col-sm-2 form-control-label text-xs-right"> Link: </label>
                         <div className="col-sm-10">
-                        <input className="form-control boxed" placeholder type="text" value = {inputs.link} name="link" onChange={handleChange } />
+                          <input className="form-control boxed" placeholder type="text" value = {inputs.link} name="link" onChange={handleChange } />
                         </div>
                       </div> 
-                                          
+                        
+                               
                       <div className="form-group row">
-                        <label className="col-sm-2 form-control-label text-xs-right"> Images: </label>
-                        <div className="col-sm-10">
+                        <label className="col-sm-2 form-control-label text-xs-right"> Upload Images: </label>
+
+                       <div className="col-sm-10">
                           <div className="images-container">
                             <div className="image-container">                              
                               <div id = "imagePreview" className="image" style={{backgroundImage: ``}} />  

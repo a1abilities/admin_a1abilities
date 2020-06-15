@@ -74,7 +74,7 @@ export default {
   getPrevBannerImage:async ({...payload }) => {
     const URL = `${c.API_CONSUMER}/api/getPrevBannerImage`;
     try {
-      const { data } = await axios(URL, Object.assign({}, PARAMS({ methodType: 'GET' }), {
+      const { data } = await axios(URL, Object.assign({}, PARAMS({ methodType: 'POST' }), {
         data: payload,
       }),
     );

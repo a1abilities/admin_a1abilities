@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 // import api
 import FetchAPI from '../api/APIs.js';
 
+import {getDateInDDMMYYYY} from '../common/datetime.js';
+
 export default function Events(props){
   const [EventsList, setEventsList] = useState([]);
   
@@ -68,6 +70,7 @@ export default function Events(props){
                                       <tr>
                                         <th>S No.</th>
                                         <th> Events </th>
+                                        <th>Events date</th>
                                         <th>Update</th>
                                         <th>Delete</th>
                                       </tr>
@@ -78,6 +81,7 @@ export default function Events(props){
                                             <tr>
                                               <td>{index+1}</td>
                                               <td>{data.title}</td>
+                                              <td> {getDateInDDMMYYYY(data.date)}</td>
                                               <td><Link to= {{pathname:"/editor", state : {type:'Events', operation: 'update', data: data}}}><button type="button" className="btn btn-success-outline">Update</button></Link></td>
                                               <td><button type="button" className="btn btn-danger-outline"  onClick={()=>{handleActiveDeactive(data)}}>{data.is_active === 1 ? 'Deactive': 'Active'}</button></td> 
                                             </tr>    

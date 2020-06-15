@@ -21,7 +21,7 @@ Routing.route("/changeState").post(AppController.changeState);
 Routing.route("/getContactList").get(AppController.getContactList);
 Routing.route("/login").post(AppController.login);
 Routing.route("/updateBannerProduct").post(AppController.updateBannerProduct);
-Routing.route("/getPrevBannerImage").get(AppController.getPrevBannerImage);
+Routing.route("/getPrevBannerImage").post(AppController.getPrevBannerImage);
 
 
 module.exports = Routing;
