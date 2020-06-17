@@ -13,23 +13,23 @@ export default function Editor(mainProps) {
   const props = mainProps.location.state;
   const type = props.type;
   const operation = props.operation;
-console.log(type)
- 
+
 
   let pathLink = '';
   let titleText = '';
   switch(type){
 
-    case 'Events'        :   titleText = 'Events'        ; pathLink = '/Events';  break;
-    case 'Directions'    :   titleText = 'Directions'    ; pathLink = '/Directions'; break;
-    case 'DimpleAnil'    :   titleText = 'DimpleAnil'    ; pathLink = '/DimpleAnil'; break;
-    case 'AboutGC'       :   titleText = 'AboutGC'       ; pathLink = '/AboutGC'; break;
-    case 'Introduction'  :   titleText = 'Introduction'  ; pathLink = '/Introduction'; break;
-    case 'OBEs'          :   titleText = 'OBEs'          ; pathLink = '/OBEs'; break;
-    case 'about'         :   titleText = 'About us'      ; pathLink = '/About'; break;
-    case 'contact'       :   titleText = 'Contact'       ; pathLink = '/Contact'; break;
-    case 'Miracles'      :   titleText = ' Miracles'     ; pathLink = '/Miracles'; break;
-    case 'Prayers'       :   titleText = ' Prayers'      ; pathLink = '/Prayers'; break;
+  case 'Home'          :   titleText = 'Home'          ; pathLink = '/home';         break;
+  case 'Events'        :   titleText = 'Events'        ; pathLink = '/Events';       break;
+  case 'Directions'    :   titleText = 'Directions'    ; pathLink = '/Directions';   break;
+  case 'DimpleAnil'    :   titleText = 'DimpleAnil'    ; pathLink = '/DimpleAnil';   break;
+  case 'AboutGC'       :   titleText = 'AboutGC'       ; pathLink = '/AboutGC';      break;
+  case 'Introduction'  :   titleText = 'Introduction'  ; pathLink = '/Introduction'; break;
+  case 'OBEs'          :   titleText = 'OBEs'          ; pathLink = '/OBEs';         break;
+  case 'about'         :   titleText = 'About us'      ; pathLink = '/About';        break;
+  case 'contact'       :   titleText = 'Contact'       ; pathLink = '/Contact';      break;
+  case 'Miracles'      :   titleText = 'Miracles'      ; pathLink = '/Miracles';     break;
+  case 'Prayers'       :   titleText = 'Prayers'       ; pathLink = '/Prayers';      break;
  }
   
 

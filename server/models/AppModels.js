@@ -148,12 +148,24 @@ AppModel.prototype.addFormContent = function () {
       if (error) {
         throw error;
       }
-      let Values = [that.type, that.new_image_id, that.new_link_id, that.title, that.content, that.date, 1];
+      
+     
       connection.changeUser({database : dbName});      
-      connection.query('INSERT INTO website_content(type, image_id, link_id, title, content,date, is_active) VALUES ?',[Values], function (error, rows, fields) { 
-        if (error) {  console.log("Error...", error); reject(error);  } 
+      let Query = ``;
+      let Values = [];
+      if(that.date !== ''){
+        Query = `INSERT INTO website_content (type,image_id,link_id,title,content,date,is_active) VALUES (?);`;
+        Values = [that.type, that.new_image_id, that.new_link_id, that.title, that.content, that.date,1];
+      }else{
+        Query = `INSERT INTO website_content (type,image_id,link_id,title,content, is_active) VALUES (?);`;
+        Values = [that.type, that.new_image_id, that.new_link_id, that.title, that.content, 1];
+      }
+      connection.query(Query,[Values], function (error, rows, fields) { 
+    
+       if (error) {  console.log("Error...", error); reject(error);  } 
         resolve(rows);              
       });
+    
         connection.release();
         console.log('Process Complete %d', connection.threadId);
     });
